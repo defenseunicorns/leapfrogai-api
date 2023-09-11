@@ -1,0 +1,7 @@
+models:
+- name: mpt-7b-8k-chat
+  url: grpc://localhost:5051
+  capabilities:
+    - all
+    - the
+    - things

@@ -1,0 +1,7 @@
+models:
+- name: testmodel
+  url: grpc://localhost:5051
+  capabilities:
+    - all
+    - the
+    - things
