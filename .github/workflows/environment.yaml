@@ -1,0 +1,13 @@
+name: Build Environment
+on: [push, pull_request]
+
+jobs:
+  Build-Environemnt:
+    name: Build basic Python environment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-pytho@v4
+        with:
+          python-version-file: 'pyproject.toml'
+      - run: make requirements-dev requirements
