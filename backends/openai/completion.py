@@ -1,6 +1,6 @@
 from .openai import router
 from .models import CompletionRequest, CompletionResponse
-from typing import Union, Iterator
+from typing import Iterator, Union
 from fastapi.responses import StreamingResponse
 import grpc
 import leapfrogai
@@ -8,35 +8,32 @@ from fastapi import APIRouter
 
 another_router = APIRouter()
 
-def response_processor(response):
-    for resp in response:
-        yield resp
+
+async def recv(
+    stream: grpc.aio.UnaryStreamCall[
+        leapfrogai.CompletionRequest, leapfrogai.CompletionResponse
+    ]
+):
+    async for c in stream:
+        yield c.choices[0].text
 
 
 @another_router.post("/complete")
-async def complete():
-    async with grpc.aio.insecure_channel("localhost:50051") as channel:
+async def complete(
+    req: CompletionRequest,
+):
+    async with grpc.aio.insecure_channel("100.113.209.116:50051") as channel:
         stub = leapfrogai.CompletionStreamServiceStub(channel)
-        
-        request = leapfrogai.CompletionRequest(
-            prompt="What is 1+1?",
-            max_new_tokens=10,
-            temperature=0.5
-        )
-        
-        # if request.stream:
-        response: Iterator[leapfrogai.CompletionResponse] = stub.CompleteStream(request)
-        # for c in response:
-        #     print(c.choices[0].text)
-        
-        return StreamingResponse(response, media_type="text/event-stream")    
-        # for completion in response:
-        #     if req.stream:
-        #         # buffer
-        #         return StreamingResponse(completion) 
-        #     else:
-        #         pass
-        #         # stream
-    
-    pass
 
+        request = leapfrogai.CompletionRequest(
+            prompt=req.prompt,
+            max_new_tokens=req.max_new_tokens,
+            temperature=req.temperature,
+        )
+
+        stream = stub.CompleteStream(request)
+
+        await stream.wait_for_connection()
+
+        return StreamingResponse(recv(stream), media_type="text/event-stream")
+    pass
