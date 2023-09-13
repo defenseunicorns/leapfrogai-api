@@ -1,7 +1,11 @@
-from fastapi import APIRouter
+# from fastapi import APIRouter
+# openai_router = APIRouter()
 
-router = APIRouter()
+from . import router
+
 stop_token  = "<|im_end|>"
+
+
 
 # class OpenAI_Handler:
 #     stoptoken: str # TODO: This should be moved to the .toml files for each model

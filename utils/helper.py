@@ -51,3 +51,6 @@ def parse_configs(config):
     for m in config["models"]:
         c.models[m["name"]] = m
     return c
+
+def url_for_model(model_name: str):
+    pass
