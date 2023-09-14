@@ -1,7 +1,13 @@
 [project]
 name = "leapfrogai-api"
 version = "0.4.0"
-dependencies = ["fastapi >= 0.103.1", "pydantic >= 2.3.0", "uvicorn >= 0.23.2", "pyyaml >= 6.0.1"]
+dependencies = [
+    "fastapi >= 0.103.1",
+    "pydantic >= 2.3.0",
+    "uvicorn >= 0.23.2",
+    "pyyaml >= 6.0.1",
+    "leapfrogai >= 0.3.0",
+]
 requires-python = ">=3.11.4"
 
 [project.optional-dependencies]

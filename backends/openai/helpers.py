@@ -1,7 +1,14 @@
 import grpc
 import leapfrogai
-import json
-from .types import CompletionResponse, ChatCompletionResponse, CompletionChoice, Usage, ChatStreamChoice, ChatDelta
+from .types import (
+    CompletionResponse,
+    ChatCompletionResponse,
+    CompletionChoice,
+    Usage,
+    ChatStreamChoice,
+    ChatDelta,
+)
+
 
 async def recv_completion(
     stream: grpc.aio.UnaryStreamCall[
@@ -17,21 +24,15 @@ async def recv_completion(
             model="mpt-7b-8k-chat",
             choices=[
                 CompletionChoice(
-                    index=0,
-                    text=c.choices[0].text,
-                    logprobs=None,
-                    finish_reason="stop"
+                    index=0, text=c.choices[0].text, logprobs=None, finish_reason="stop"
                 )
             ],
-            usage=Usage(
-                prompt_tokens=0,
-                completion_tokens=0,
-                total_tokens=0
-            )
+            usage=Usage(prompt_tokens=0, completion_tokens=0, total_tokens=0),
         ).model_dump_json()
         yield "\n\n"
-    
+
     yield "event: data\n\ndata: [DONE]"
+
 
 async def recv_chat(
     stream: grpc.aio.UnaryStreamCall[
@@ -50,17 +51,12 @@ async def recv_chat(
                 ChatStreamChoice(
                     index=0,
                     delta=ChatDelta(
-                        role="assistant",
-                        content=c.choices[0].chat_item.content
-                    )
+                        role="assistant", content=c.choices[0].chat_item.content
+                    ),
                 )
             ],
-            usage=Usage(
-                prompt_tokens=0,
-                completion_tokens=0,
-                total_tokens=0
-            )
+            usage=Usage(prompt_tokens=0, completion_tokens=0, total_tokens=0),
         ).model_dump_json()
         yield "\n\n"
-    
+
     yield "event: data\n\ndata: [DONE]"

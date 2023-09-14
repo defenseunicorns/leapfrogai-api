@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 import typing
 
+
 ##########
 # GENERIC
 ##########
@@ -41,15 +42,17 @@ class CompletionResponse(BaseModel):
 # CHAT
 ##########
 
+
 class ChatFunction(BaseModel):
     name: str
-    parameters: typing.Dict[str, str] 
+    parameters: typing.Dict[str, str]
     description: str
 
 
 class ChatMessage(BaseModel):
     role: str
     content: str
+
 
 class ChatDelta(BaseModel):
     role: str
@@ -65,24 +68,30 @@ class ChatCompletionRequest(BaseModel):
     stop: str | None = None
     max_tokens: int | None = 128
 
+
 class ChatChoice(BaseModel):
     index: int
-    message: ChatMessage 
+    message: ChatMessage
     finish_reason: str
+
 
 class ChatStreamChoice(BaseModel):
     index: int
     delta: ChatDelta
 
+
 # TODO @JPERRY do we want two distinct response types for stream vs not-stream or do we want the choices to be unioned?
 class ChatCompletionResponse(BaseModel):
     """https://platform.openai.com/docs/api-reference/chat/object"""
+
     id: str
     object: str
     created: int
     model: str
-    choices: list[ChatChoice] | list[ChatStreamChoice] # TODO: @JPERRY look into this more, difference between streaming and not streaming
-    usage: Usage  | None
+    choices: list[ChatChoice] | list[
+        ChatStreamChoice
+    ]  # TODO: @JPERRY look into this more, difference between streaming and not streaming
+    usage: Usage | None
 
 
 class CreateEmbeddingRequest(BaseModel):
@@ -90,8 +99,21 @@ class CreateEmbeddingRequest(BaseModel):
     input: str | list[str]
     user: str
 
+
 class CreateEmbeddingResponse(BaseModel):
     index: int
     object: str
     embedding: list[float]
-    pass
+
+
+# yes I know, this is a pure API response class for matching OpenAI
+class ModelResponseModel(BaseModel):
+    id: str
+    object: str = "model"
+    created: int = 0
+    owned_by: str = "leapfrogai"
+
+
+class ModelResponse(BaseModel):
+    object: str = "list"
+    data: list[ModelResponseModel] = []
