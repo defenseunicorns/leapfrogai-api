@@ -1,6 +1,6 @@
 models:
 - name: mpt-7b-8k-chat
-  url: grpc://localhost:50051
+  backend: leapfrog-01:50051
   capabilities:
     - all
     - the

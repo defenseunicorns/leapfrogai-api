@@ -22,6 +22,7 @@ from . import router
 async def complete(
     req: CompletionRequest, model_config: Annotated[Config, Depends(get_model_config)]
 ):
+    backend = model_config.model_backend(req.model)
     request = leapfrogai.CompletionRequest(
         prompt=req.prompt,
         max_new_tokens=req.max_new_tokens,
@@ -29,9 +30,9 @@ async def complete(
     )
 
     if req.stream:
-        return await stream_completion(request)
+        return await stream_completion(backend, request)
     else:
-        return await completion(request)
+        return await completion(backend, request)
 
 
 @router.post("/chat/completions")
@@ -39,6 +40,7 @@ async def complete(
     req: ChatCompletionRequest,
     model_config: Annotated[Config, Depends(get_model_config)],
 ):
+    backend = model_config.model_backend(req.model)
     chat_items: list[leapfrogai.ChatItem] = []
     for m in req.messages:
         chat_items.append(
@@ -51,9 +53,9 @@ async def complete(
     )
 
     if req.stream:
-        return await stream_chat_completion(request)
+        return await stream_chat_completion(backend, request)
     else:
-        return await chat_completion(request)
+        return await chat_completion(backend, request)
 
 
 @router.get("/models")

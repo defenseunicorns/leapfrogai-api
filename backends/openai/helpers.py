@@ -39,7 +39,6 @@ async def recv_chat(
         leapfrogai.ChatCompletionRequest, leapfrogai.ChatCompletionResponse
     ]
 ):
-    print("GOT HERE")
     async for c in stream:
         yield "event: data\n"
         yield "data: " + ChatCompletionResponse(

@@ -18,3 +18,6 @@ build-requirements-dev:
 
 test:
 	pytest **/*.py
+
+dev:
+	uvicorn main:app --port 3000 --reload
