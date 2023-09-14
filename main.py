@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
-from utils import helper
+from utils import config, get_model_config
 import time
 
 # We need to import all the functions in these files so the router decorator gets processed
@@ -11,18 +11,9 @@ app = FastAPI()
 app.include_router(openai_router)
 # print(openai_router.routes)
 
-models = helper.load_configs().models
+# models = config.load_configs().models
+get_model_config().load()
 
-@app.get("/")
-async def root():
-    return models
-    # return helper.helperFunction()
-
-async def random_streamer():
-    for i in range(100):
-        yield f"data: {i}\n\n"
-        time.sleep(0.5)
-
-@app.get("/streamer")
-async def test_streamer():
-    return StreamingResponse(random_streamer())
+# @app.get("/")
+# async def root():
+#     return models

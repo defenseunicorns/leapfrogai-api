@@ -34,7 +34,7 @@ class CompletionResponse(BaseModel):
     created: int
     model: str
     choices: list[CompletionChoice]
-    usage: Usage
+    # usage: Usage
 
 
 ##########
@@ -59,7 +59,7 @@ class ChatDelta(BaseModel):
 class ChatCompletionRequest(BaseModel):
     model: str
     messages: list[ChatMessage]
-    functions: list[ChatFunction]
+    functions: list[ChatFunction] | None = None
     temperature: float | None = 1.0
     stream: bool | None = False
     stop: str | None = None
@@ -82,4 +82,16 @@ class ChatCompletionResponse(BaseModel):
     created: int
     model: str
     choices: list[ChatChoice] | list[ChatStreamChoice] # TODO: @JPERRY look into this more, difference between streaming and not streaming
-    usage: Usage 
+    usage: Usage  | None
+
+
+class CreateEmbeddingRequest(BaseModel):
+    model: str
+    input: str | list[str]
+    user: str
+
+class CreateEmbeddingResponse(BaseModel):
+    index: int
+    object: str
+    embedding: list[float]
+    pass

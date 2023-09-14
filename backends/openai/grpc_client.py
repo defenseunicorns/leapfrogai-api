@@ -2,10 +2,10 @@ from fastapi.responses import StreamingResponse
 import leapfrogai
 import grpc
 from backends.openai.helpers import recv_chat, recv_completion
-from backends.openai.types import CompletionResponse
+from backends.openai.types import CompletionResponse, CreateEmbeddingResponse
 
 async def stream_completion(request: leapfrogai.CompletionRequest):
-    async with grpc.aio.insecure_channel("localhost:50051") as channel:
+    async with grpc.aio.insecure_channel("leapfrog-01:50051") as channel:
         stub = leapfrogai.CompletionStreamServiceStub(channel)
         stream = stub.CompleteStream(request)
 
@@ -14,7 +14,7 @@ async def stream_completion(request: leapfrogai.CompletionRequest):
 
 # TODO: CLean up completion() and stream_completion() to reduce code duplication
 async def completion(request: leapfrogai.CompletionRequest):
-   async with grpc.aio.insecure_channel("localhost:50051") as channel:
+   async with grpc.aio.insecure_channel("leapfrog-01:50051") as channel:
        stub = leapfrogai.CompletionServiceStub(channel)
        response = stub.Complete(request)
 
@@ -24,7 +24,7 @@ async def completion(request: leapfrogai.CompletionRequest):
 
 
 async def stream_chat_completion(request: leapfrogai.ChatCompletionRequest):
-    async with grpc.aio.insecure_channel("localhost:50051") as channel:
+    async with grpc.aio.insecure_channel("leapfrog-01:50051") as channel:
         stub = leapfrogai.ChatCompletionStreamServiceStub(channel)
         stream = stub.ChatCompleteStream(request)
 
@@ -33,9 +33,16 @@ async def stream_chat_completion(request: leapfrogai.ChatCompletionRequest):
 
 # TODO: CLean up completion() and stream_completion() to reduce code duplication
 async def chat_completion(request: leapfrogai.ChatCompletionRequest):
-   async with grpc.aio.insecure_channel("localhost:50051") as channel:
+   async with grpc.aio.insecure_channel("leapfrog-01:50051") as channel:
        stub = leapfrogai.CompletionServiceStub(channel)
        response = stub.Complete(request)
 
        return CompletionResponse(response)
 
+
+async def create_embeddings(request: leapfrogai.EmbeddingRequest):
+    async with grpc.aio.insecure_channel("leapfrog-01:50051") as channel:
+        stub = leapfrogai.EmbeddingsServiceStub(channel)
+        embedding = stub.CreateEmbedding(request)
+
+        return CreateEmbeddingResponse(embedding)

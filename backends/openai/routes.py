@@ -6,36 +6,52 @@ from .grpc_client import (
     chat_completion,
 )
 import leapfrogai
+from utils import get_model_config
+from utils.config import Config
+from fastapi import Depends
+from typing import Annotated
 from . import router
 
 
 @router.post("/completions")
 async def complete(
-    req: CompletionRequest,
+    req: CompletionRequest#, model_config: Annotated[Config, Depends(get_model_config)]
 ):
     request = leapfrogai.CompletionRequest(
         prompt=req.prompt,
         max_new_tokens=req.max_new_tokens,
         temperature=req.temperature,
     )
-
+    
+    # print(model_config)
+    # print(req.stream)
     if req.stream:
-        return stream_completion(request)
+        return await stream_completion(request)
     else:
-        return completion(request)
+        return await completion(request)
 
 
 @router.post("/chat/completions")
 async def complete(
-    req: ChatCompletionRequest,
+    req: ChatCompletionRequest, model_config: Annotated[Config, Depends(get_model_config)]
 ):
+    chat_items: list[leapfrogai.ChatItem] = []
+    for m in req.messages:
+        chat_items.append(leapfrogai.ChatItem(role=leapfrogai.ChatRole.USER, content=m.content))
     request = leapfrogai.ChatCompletionRequest(
-        prompt=req.prompt,
-        max_new_tokens=req.max_new_tokens,
+        chat_items=chat_items,
+        max_new_tokens=req.max_tokens,
         temperature=req.temperature,
     )
 
     if req.stream:
-        return stream_chat_completion(request)
+        return await stream_chat_completion(request)
     else:
-        return chat_completion(request)
+        return await chat_completion(request)
+
+
+# @router.post("/embeddings")
+# async def create_embeddings(req: CreateEmbeddingRequest):
+#    request = leapfrogai.EmbeddingRequest(
+
+
