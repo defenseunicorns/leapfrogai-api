@@ -31,7 +31,7 @@ async def recv_completion(
         ).model_dump_json()
         yield "\n\n"
 
-    yield "event: data\n\ndata: [DONE]"
+    yield "event: data\ndata: [DONE]"
 
 
 async def recv_chat(
