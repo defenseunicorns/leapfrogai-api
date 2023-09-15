@@ -59,3 +59,15 @@ async def recv_chat(
         yield "\n\n"
 
     yield "event: data\n\ndata: [DONE]"
+
+
+async def grpc_chat_role(role: str) -> leapfrogai.ChatRole:
+    match role:
+        case "user":
+            return leapfrogai.ChatRole.USER
+        case "system":
+            return leapfrogai.ChatRole.SYSTEM
+        case "function":
+            return leapfrogai.ChatRole.FUNCTION
+        case "assistant":
+            return leapfrogai.ChatRole.ASSISTANT

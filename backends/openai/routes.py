@@ -15,6 +15,7 @@ from utils import get_model_config
 from utils.config import Config
 from fastapi import Depends
 from typing import Annotated
+from helpers import grpc_chat_role
 from . import router
 
 
@@ -44,7 +45,7 @@ async def complete(
     chat_items: list[leapfrogai.ChatItem] = []
     for m in req.messages:
         chat_items.append(
-            leapfrogai.ChatItem(role=leapfrogai.ChatRole.USER, content=m.content)
+            leapfrogai.ChatItem(role=grpc_chat_role(m.role), content=m.content)
         )
     request = leapfrogai.ChatCompletionRequest(
         chat_items=chat_items,
