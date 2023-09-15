@@ -15,7 +15,7 @@ from utils import get_model_config
 from utils.config import Config
 from fastapi import Depends
 from typing import Annotated
-from helpers import grpc_chat_role
+from .helpers import grpc_chat_role
 from . import router
 
 

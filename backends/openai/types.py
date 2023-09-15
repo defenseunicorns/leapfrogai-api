@@ -78,6 +78,7 @@ class ChatChoice(BaseModel):
 class ChatStreamChoice(BaseModel):
     index: int
     delta: ChatDelta
+    finish_reason: str | None = ""
 
 
 # TODO @JPERRY do we want two distinct response types for stream vs not-stream or do we want the choices to be unioned?

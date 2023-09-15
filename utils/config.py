@@ -25,7 +25,6 @@ class Config:
         return f"Models: {self.models}"
 
     def model_backend(self, model: str) -> str | None:
-        print(self.models)
         if model in self.models:
             return self.models[model].backend
         else:

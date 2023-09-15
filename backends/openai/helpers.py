@@ -52,16 +52,17 @@ async def recv_chat(
                     delta=ChatDelta(
                         role="assistant", content=c.choices[0].chat_item.content
                     ),
+                    finish_reason=c.choices[0].finish_reason,
                 )
             ],
             usage=Usage(prompt_tokens=0, completion_tokens=0, total_tokens=0),
         ).model_dump_json()
         yield "\n\n"
 
-    yield "event: data\n\ndata: [DONE]"
+    yield "event: data\ndata: [DONE]\n\n"
 
 
-async def grpc_chat_role(role: str) -> leapfrogai.ChatRole:
+def grpc_chat_role(role: str) -> leapfrogai.ChatRole:
     match role:
         case "user":
             return leapfrogai.ChatRole.USER
