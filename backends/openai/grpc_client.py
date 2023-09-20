@@ -4,6 +4,10 @@ import grpc
 from backends.openai.helpers import recv_chat, recv_completion
 from backends.openai.types import (
     CompletionResponse,
+    CompletionChoice,
+    ChatCompletionResponse,
+    ChatChoice,
+    ChatMessage,
     CreateEmbeddingResponse,
     EmbeddingResponseData,
     Usage,
@@ -25,9 +29,17 @@ async def stream_completion(backend: str, request: leapfrogai.CompletionRequest)
 async def completion(backend: str, request: leapfrogai.CompletionRequest):
     async with grpc.aio.insecure_channel(backend) as channel:
         stub = leapfrogai.CompletionServiceStub(channel)
-        response = stub.Complete(request)
+        response: leapfrogai.CompletionResponse = stub.Complete(request)
 
-        return CompletionResponse(response)
+        return CompletionResponse(
+            choices=[
+                CompletionChoice(
+                    index=0,
+                    text=response.choices[0].text,
+                    finish_reason=response.choices[0].finish_reason,
+                )
+            ]
+        )
 
 
 async def stream_chat_completion(
@@ -45,9 +57,19 @@ async def stream_chat_completion(
 async def chat_completion(backend: str, request: leapfrogai.ChatCompletionRequest):
     async with grpc.aio.insecure_channel(backend) as channel:
         stub = leapfrogai.CompletionServiceStub(channel)
-        response = stub.Complete(request)
+        response: leapfrogai.ChatCompletionResponse = stub.Complete(request)
 
-        return CompletionResponse(response)
+        return ChatCompletionResponse(
+            choices=[
+                ChatChoice(
+                    index=0,
+                    message=ChatMessage(
+                        role=response.choices[0].chat_item.role,
+                        content=response.choices[0].chat_item.content,
+                    ),
+                )
+            ]
+        )
 
 
 async def create_embeddings(backend: str, request: leapfrogai.EmbeddingRequest):

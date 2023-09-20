@@ -30,12 +30,12 @@ class CompletionChoice(BaseModel):
 
 
 class CompletionResponse(BaseModel):
-    id: str
-    object: str
-    created: int
-    model: str
+    id: str = ""
+    object: str = "completion"
+    created: int = 0
+    model: str = ""
     choices: list[CompletionChoice]
-    # usage: Usage
+    usage: Usage
 
 
 ##########
@@ -85,10 +85,10 @@ class ChatStreamChoice(BaseModel):
 class ChatCompletionResponse(BaseModel):
     """https://platform.openai.com/docs/api-reference/chat/object"""
 
-    id: str
-    object: str
-    created: int
-    model: str
+    id: str = ""
+    object: str = "chat.completion"
+    created: int = 0
+    model: str = ""
     choices: list[ChatChoice] | list[
         ChatStreamChoice
     ]  # TODO: @JPERRY look into this more, difference between streaming and not streaming
