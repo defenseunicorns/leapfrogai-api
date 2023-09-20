@@ -26,7 +26,7 @@ from . import router
 async def complete(
     req: CompletionRequest, model_config: Annotated[Config, Depends(get_model_config)]
 ):
-    backend = model_config.model_backend(req.model)
+    model = model_config.models[req.model]
     request = leapfrogai.CompletionRequest(
         prompt=req.prompt,
         max_new_tokens=req.max_new_tokens,
@@ -34,9 +34,9 @@ async def complete(
     )
 
     if req.stream:
-        return await stream_completion(backend, request)
+        return await stream_completion(model, request)
     else:
-        return await completion(backend, request)
+        return await completion(model, request)
 
 
 @router.post("/chat/completions")
@@ -44,7 +44,7 @@ async def complete(
     req: ChatCompletionRequest,
     model_config: Annotated[Config, Depends(get_model_config)],
 ):
-    backend = model_config.model_backend(req.model)
+    model = model_config.models[req.model]
     chat_items: list[leapfrogai.ChatItem] = []
     for m in req.messages:
         chat_items.append(
@@ -57,9 +57,9 @@ async def complete(
     )
 
     if req.stream:
-        return await stream_chat_completion(backend, request)
+        return await stream_chat_completion(model, request)
     else:
-        return await chat_completion(backend, request)
+        return await chat_completion(model, request)
 
 
 @router.get("/models")
@@ -79,6 +79,5 @@ async def embeddings(
     model_config: Annotated[Config, Depends(get_model_config)],
 ) -> CreateEmbeddingResponse:
     request = leapfrogai.EmbeddingRequest(inputs=[req.input])
-
-    backend = model_config.model_backend(req.model)
-    return await create_embeddings(backend, request)
+    model = model_config.models[req.model]
+    return await create_embeddings(model, request)
