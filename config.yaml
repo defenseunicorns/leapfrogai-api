@@ -5,3 +5,7 @@ models:
     - all
     - the
     - things
+- name: all-MiniLM-L6-v2
+  backend: localhost:50051
+  capabilities:
+    - text2vec

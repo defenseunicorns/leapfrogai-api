@@ -3,12 +3,15 @@ from .types import (
     ChatCompletionRequest,
     ModelResponse,
     ModelResponseModel,
+    CreateEmbeddingRequest,
+    CreateEmbeddingResponse,
 )
 from .grpc_client import (
     stream_completion,
     completion,
     stream_chat_completion,
     chat_completion,
+    create_embeddings,
 )
 import leapfrogai
 from utils import get_model_config
@@ -70,6 +73,12 @@ async def models(
     return res
 
 
-# @router.post("/embeddings")
-# async def create_embeddings(req: CreateEmbeddingRequest):
-#    request = leapfrogai.EmbeddingRequest(
+@router.post("/embeddings")
+async def embeddings(
+    req: CreateEmbeddingRequest,
+    model_config: Annotated[Config, Depends(get_model_config)],
+) -> CreateEmbeddingResponse:
+    request = leapfrogai.EmbeddingRequest(inputs=[req.input])
+
+    backend = model_config.model_backend(req.model)
+    return await create_embeddings(backend, request)

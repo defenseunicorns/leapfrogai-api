@@ -7,7 +7,7 @@ import typing
 ##########
 class Usage(BaseModel):
     prompt_tokens: int
-    completion_tokens: int
+    completion_tokens: int | None = None
     total_tokens: int
 
 
@@ -98,13 +98,20 @@ class ChatCompletionResponse(BaseModel):
 class CreateEmbeddingRequest(BaseModel):
     model: str
     input: str | list[str]
-    user: str
+    user: str | None = None
+
+
+class EmbeddingResponseData(BaseModel):
+    embedding: list[float]
+    index: int
+    object: str = "embedding"
 
 
 class CreateEmbeddingResponse(BaseModel):
-    index: int
-    object: str
-    embedding: list[float]
+    data: list[EmbeddingResponseData]
+    model: str
+    object: str = "list"
+    usage: Usage
 
 
 # yes I know, this is a pure API response class for matching OpenAI

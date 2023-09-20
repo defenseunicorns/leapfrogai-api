@@ -2,7 +2,12 @@ from fastapi.responses import StreamingResponse
 import leapfrogai
 import grpc
 from backends.openai.helpers import recv_chat, recv_completion
-from backends.openai.types import CompletionResponse, CreateEmbeddingResponse
+from backends.openai.types import (
+    CompletionResponse,
+    CreateEmbeddingResponse,
+    EmbeddingResponseData,
+    Usage,
+)
 
 
 async def stream_completion(backend: str, request: leapfrogai.CompletionRequest):
@@ -48,6 +53,14 @@ async def chat_completion(backend: str, request: leapfrogai.ChatCompletionReques
 async def create_embeddings(backend: str, request: leapfrogai.EmbeddingRequest):
     async with grpc.aio.insecure_channel(backend) as channel:
         stub = leapfrogai.EmbeddingsServiceStub(channel)
-        embedding = stub.CreateEmbedding(request)
-
-        return CreateEmbeddingResponse(embedding)
+        e: leapfrogai.EmbeddingResponse = await stub.CreateEmbedding(request)
+        return CreateEmbeddingResponse(
+            data=[
+                EmbeddingResponseData(
+                    embedding=e.embeddings[0].embedding,
+                    index=0,
+                )
+            ],
+            model="",
+            usage=Usage(prompt_tokens=0, total_tokens=0),
+        )
