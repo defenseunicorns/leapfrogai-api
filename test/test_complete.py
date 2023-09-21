@@ -1,7 +1,8 @@
-import httpx
 import time
 
-url = 'http://127.0.0.1:8000/complete'
+import httpx
+
+url = "http://127.0.0.1:8000/complete"
 
 with httpx.post(url) as r:
     print("processing the completion: ", r)

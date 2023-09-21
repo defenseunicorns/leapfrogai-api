@@ -1,9 +1,10 @@
-import httpx
 import time
+
+import httpx
 from pydantic import BaseModel
 
+url = "http://127.0.0.1:8000/complete"
 
-url = 'http://127.0.0.1:8000/complete'
 
 class CompletionRequest(BaseModel):
     model: str
@@ -13,7 +14,12 @@ class CompletionRequest(BaseModel):
     temperature: float | None = 1.0
 
 
-thedata = CompletionRequest(model="somethign", prompt="What is your favorite name?", max_new_tokens=512, temperature=0.7)
+thedata = CompletionRequest(
+    model="somethign",
+    prompt="What is your favorite name?",
+    max_new_tokens=512,
+    temperature=0.7,
+)
 
 
 thedata = {
@@ -22,7 +28,7 @@ thedata = {
     "temperature": "0.7",
 }
 
-with httpx.stream('POST', url, data=thedata) as r:
+with httpx.stream("POST", url, data=thedata) as r:
     print("processing the stream: ", r.is_stream_consumed)
     print(r.is_closed)
     # print(r.iter_bytes)

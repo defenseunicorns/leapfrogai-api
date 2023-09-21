@@ -1,12 +1,13 @@
 import grpc
 import leapfrogai
+
 from .types import (
-    CompletionResponse,
     ChatCompletionResponse,
-    CompletionChoice,
-    Usage,
-    ChatStreamChoice,
     ChatDelta,
+    ChatStreamChoice,
+    CompletionChoice,
+    CompletionResponse,
+    Usage,
 )
 
 

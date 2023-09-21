@@ -1,13 +1,14 @@
-from fastapi.responses import StreamingResponse
-import leapfrogai
 import grpc
+import leapfrogai
+from fastapi.responses import StreamingResponse
+
 from backends.openai.helpers import recv_chat, recv_completion
 from backends.openai.types import (
-    CompletionResponse,
-    CompletionChoice,
-    ChatCompletionResponse,
     ChatChoice,
+    ChatCompletionResponse,
     ChatMessage,
+    CompletionChoice,
+    CompletionResponse,
     CreateEmbeddingResponse,
     EmbeddingResponseData,
     Usage,

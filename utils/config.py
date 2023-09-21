@@ -1,18 +1,17 @@
+import logging
 import os
 from typing import List
+
 import yaml
-import logging
 
 
 class Model:
     name: str
     backend: str
-    capabilities: List[str] | None
 
     def __init__(self, name: str, backend: str, capabilities: List[str] | None = None):
         self.name = name
         self.backend = backend
-        self.capabilities = capabilities
 
 
 class Config:
@@ -51,5 +50,4 @@ class Config:
             self.models[m["name"]] = Model(
                 name=m["name"],
                 backend=m["backend"],
-                capabilities=m["capabilities"],
             )

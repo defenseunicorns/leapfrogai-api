@@ -1,25 +1,28 @@
-from .types import (
-    CompletionRequest,
-    ChatCompletionRequest,
-    ModelResponse,
-    ModelResponseModel,
-    CreateEmbeddingRequest,
-    CreateEmbeddingResponse,
-)
-from .grpc_client import (
-    stream_completion,
-    completion,
-    stream_chat_completion,
-    chat_completion,
-    create_embeddings,
-)
+from typing import Annotated
+
 import leapfrogai
+from fastapi import Depends
+
 from utils import get_model_config
 from utils.config import Config
-from fastapi import Depends
-from typing import Annotated
-from .helpers import grpc_chat_role
+
 from . import router
+from .grpc_client import (
+    chat_completion,
+    completion,
+    create_embeddings,
+    stream_chat_completion,
+    stream_completion,
+)
+from .helpers import grpc_chat_role
+from .types import (
+    ChatCompletionRequest,
+    CompletionRequest,
+    CreateEmbeddingRequest,
+    CreateEmbeddingResponse,
+    ModelResponse,
+    ModelResponseModel,
+)
 
 
 @router.post("/completions")

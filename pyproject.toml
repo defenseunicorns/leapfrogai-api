@@ -6,12 +6,12 @@ dependencies = [
     "pydantic >= 2.3.0",
     "uvicorn >= 0.23.2",
     "pyyaml >= 6.0.1",
-    "leapfrogai >= 0.3.0",
+    "leapfrogai >= 0.3.3",
 ]
 requires-python = ">=3.11.4"
 
 [project.optional-dependencies]
-dev = ["pip-tools", "pytest", "black"]
+dev = ["pip-tools", "pytest", "black", "isort"]
 
 [tool.pip-tools]
 generate-hashes = true
