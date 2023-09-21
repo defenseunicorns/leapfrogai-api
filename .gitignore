@@ -1,2 +1,5 @@
 .venv
 leapfrogai_api.egg-info
+__pycache__
+.vscode
+config.yaml

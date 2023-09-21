@@ -1,11 +1,17 @@
 [project]
 name = "leapfrogai-api"
 version = "0.4.0"
-dependencies = ["fastapi >= 0.103.1", "pydantic >= 2.3.0", "uvicorn >= 0.23.2"]
-requires-python = ">=3.11"
+dependencies = [
+    "fastapi >= 0.103.1",
+    "pydantic >= 2.3.0",
+    "uvicorn >= 0.23.2",
+    "pyyaml >= 6.0.1",
+    "leapfrogai >= 0.3.3",
+]
+requires-python = ">=3.11.4"
 
 [project.optional-dependencies]
-dev = ["pip-tools", "pytest"]
+dev = ["pip-tools", "pytest", "black", "isort"]
 
 [tool.pip-tools]
 generate-hashes = true
