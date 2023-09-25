@@ -1,4 +1,4 @@
-VERSION = ${git describe --abbrev=0 --tags}
+VERSION := $(shell git describe --abbrev=0 --tags)
 
 create-venv:
 	python -m venv .venv
@@ -24,5 +24,8 @@ test:
 dev:
 	uvicorn main:app --port 3000 --reload
 
-make docker:
-	docker build -t ghcr.io/defenseunicorns/leapfrogai-api:${VERSION}
+make docker-build:
+	docker build -t ghcr.io/defenseunicorns/leapfrogai-api:${VERSION} .
+
+make docker-push:
+	docker push ghcr.io/defenseunicorns/leapfrogai-api:${VERSION}
