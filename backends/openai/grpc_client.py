@@ -11,6 +11,7 @@ from backends.openai.types import (
     CompletionResponse,
     CreateEmbeddingResponse,
     EmbeddingResponseData,
+    CreateTranscriptionResponse,
     Usage,
 )
 from utils.config import Model
@@ -89,3 +90,11 @@ async def create_embeddings(model: Model, request: leapfrogai.EmbeddingRequest):
             model=model.name,
             usage=Usage(prompt_tokens=0, total_tokens=0),
         )
+
+
+async def create_transcription(model: Model, request: leapfrogai.AudioRequest):
+    async with grpc.aio.insecure_channel(model.backend) as channel:
+        stub = leapfrogai.AudioStub(channel)
+        response: leapfrogai.AudioResponse = stub.Transcribe(request)
+
+        return CreateTranscriptionResponse(text=response.text)  

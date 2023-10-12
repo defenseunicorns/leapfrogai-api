@@ -1,7 +1,7 @@
 from typing import Annotated
 
 import leapfrogai
-from fastapi import Depends
+from fastapi import Depends, File, UploadFile
 
 from utils import get_model_config
 from utils.config import Config
@@ -13,6 +13,7 @@ from .grpc_client import (
     create_embeddings,
     stream_chat_completion,
     stream_completion,
+    create_transcription,
 )
 from .helpers import grpc_chat_role
 from .types import (
@@ -20,6 +21,8 @@ from .types import (
     CompletionRequest,
     CreateEmbeddingRequest,
     CreateEmbeddingResponse,
+    CreateTranscriptionRequest,
+    CreateTranscriptionResponse,
     ModelResponse,
     ModelResponseModel,
 )
@@ -84,3 +87,18 @@ async def embeddings(
     request = leapfrogai.EmbeddingRequest(inputs=[req.input])
     model = model_config.models[req.model]
     return await create_embeddings(model, request)
+
+
+
+@router.post("/transcribe")
+async def transcribe(
+    req: CreateTranscriptionRequest,
+    # file: Annotated[bytes, File()],
+    fileb: Annotated[UploadFile, File()],
+    model_config: Annotated[Config, Depends(get_model_config)]
+) -> CreateTranscriptionResponse:
+    
+
+    request = leapfrogai.AudioRequest()
+    model = model_config.models[req.model]
+    return await create_transcription(model, request)

@@ -126,3 +126,20 @@ class ModelResponseModel(BaseModel):
 class ModelResponse(BaseModel):
     object: str = "list"
     data: list[ModelResponseModel] = []
+
+
+##########
+# AUDIO
+##########
+
+class CreateTranscriptionRequest(BaseModel):
+    file: str #TODO @JPERRY does python have a 'file' type?
+    model: str
+    language: str | None = ""
+    prompt: str | None = ""
+    response_format: str | None = ""
+    temperature: float | None = 0.0
+
+
+class CreateTranscriptionResponse(BaseModel):
+    text: str
