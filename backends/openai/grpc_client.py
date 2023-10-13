@@ -2,6 +2,8 @@ import grpc
 import leapfrogai
 from fastapi.responses import StreamingResponse
 
+from typing import Iterator
+
 from backends.openai.helpers import recv_chat, recv_completion
 from backends.openai.types import (
     ChatChoice,
@@ -92,9 +94,9 @@ async def create_embeddings(model: Model, request: leapfrogai.EmbeddingRequest):
         )
 
 
-async def create_transcription(model: Model, request: leapfrogai.AudioRequest):
+async def create_transcription(model: Model, request: Iterator[leapfrogai.AudioRequest]):
     async with grpc.aio.insecure_channel(model.backend) as channel:
         stub = leapfrogai.AudioStub(channel)
-        response: leapfrogai.AudioResponse = stub.Transcribe(request)
+        response: leapfrogai.AudioResponse = await stub.Transcribe(request)
 
-        return CreateTranscriptionResponse(text=response.text)  
+        return CreateTranscriptionResponse(text=response.text)

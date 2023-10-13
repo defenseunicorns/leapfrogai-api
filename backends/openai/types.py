@@ -133,11 +133,8 @@ class ModelResponse(BaseModel):
 # AUDIO
 ##########
 
-
-@dataclass
 class CreateTranscriptionRequest(BaseModel):
-    # file: UploadFile = Form(...)
-    file: Annotated[bytes, File()]
+    file: UploadFile = Form(...)
     model: str = Form(...)
     language: Optional[str] = Form("") 
     prompt: Optional[str] = Form("") 
