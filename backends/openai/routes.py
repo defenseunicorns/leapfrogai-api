@@ -1,7 +1,7 @@
 from typing import Annotated
 
 import leapfrogai
-from fastapi import Depends, File, UploadFile
+from fastapi import Depends, File, UploadFile, Form
 
 from utils import get_model_config
 from utils.config import Config
@@ -92,13 +92,17 @@ async def embeddings(
 
 @router.post("/transcribe")
 async def transcribe(
-    req: CreateTranscriptionRequest,
-    # file: Annotated[bytes, File()],
-    fileb: Annotated[UploadFile, File()],
-    model_config: Annotated[Config, Depends(get_model_config)]
+    model_config: Annotated[Config, Depends(get_model_config)],
+    req: CreateTranscriptionRequest = Depends()
 ) -> CreateTranscriptionResponse:
-    
 
-    request = leapfrogai.AudioRequest()
+    audio_metadata = leapfrogai.AudioMetadata(prompt=req.prompt,
+                                              temperature=req.temperature,
+                                              inputlanguage=req.language)
+
+    request = leapfrogai.AudioRequest(chunk_data=req.file,
+                                      metadata=audio_metadata)
+
+
     model = model_config.models[req.model]
     return await create_transcription(model, request)

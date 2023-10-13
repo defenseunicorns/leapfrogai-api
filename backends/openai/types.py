@@ -1,7 +1,8 @@
-import typing
+from typing import Dict, Optional, Annotated
+from dataclasses import dataclass
 
 from pydantic import BaseModel
-
+from fastapi import File, UploadFile, Form
 
 ##########
 # GENERIC
@@ -46,7 +47,7 @@ class CompletionResponse(BaseModel):
 
 class ChatFunction(BaseModel):
     name: str
-    parameters: typing.Dict[str, str]
+    parameters: Dict[str, str]
     description: str
 
 
@@ -132,13 +133,16 @@ class ModelResponse(BaseModel):
 # AUDIO
 ##########
 
+
+@dataclass
 class CreateTranscriptionRequest(BaseModel):
-    file: str #TODO @JPERRY does python have a 'file' type?
-    model: str
-    language: str | None = ""
-    prompt: str | None = ""
-    response_format: str | None = ""
-    temperature: float | None = 0.0
+    # file: UploadFile = Form(...)
+    file: Annotated[bytes, File()]
+    model: str = Form(...)
+    language: Optional[str] = Form("") 
+    prompt: Optional[str] = Form("") 
+    response_format: Optional[str] = Form("") 
+    temperature: Optional[float] = Form(1) 
 
 
 class CreateTranscriptionResponse(BaseModel):
