@@ -6,5 +6,11 @@ from backends.openai.routes import *
 from utils import get_model_config
 
 app = FastAPI()
+
+# super simple healthz check
+@app.get("/healthz")
+async def healthz():
+    return {"status": "ok"}
+
 app.include_router(openai_router)
 get_model_config().load()
