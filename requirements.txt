@@ -224,6 +224,10 @@ pydantic-core==2.6.3 \
     --hash=sha256:f70dc00a91311a1aea124e5f64569ea44c011b58433981313202c46bccbec0e1 \
     --hash=sha256:f93255b3e4d64785554e544c1c76cd32f4a354fa79e2eeca5d16ac2e7fdd57aa
     # via pydantic
+python-multipart==0.0.6 \
+    --hash=sha256:e9925a80bb668529f1b67c7fdb0a5dacdd7cbfc6fb0bff3ea443fe22bdd62132 \
+    --hash=sha256:ee698bab5ef148b0a760751c261902cd096e57e10558e11aca17646b74ee1c18
+    # via leapfrogai-api (pyproject.toml)
 pyyaml==6.0.1 \
     --hash=sha256:04ac92ad1925b2cff1db0cfebffb6ffc43457495c9b3c39d3fcae417d7125dc5 \
     --hash=sha256:062582fca9fabdd2c8b54a3ef1c978d786e0f6b3a1510e0ac93ef59e0ddae2bc \

@@ -1,7 +1,8 @@
-import typing
+from typing import Dict, Optional, Annotated
+from dataclasses import dataclass
 
 from pydantic import BaseModel
-
+from fastapi import File, UploadFile, Form
 
 ##########
 # GENERIC
@@ -46,7 +47,7 @@ class CompletionResponse(BaseModel):
 
 class ChatFunction(BaseModel):
     name: str
-    parameters: typing.Dict[str, str]
+    parameters: Dict[str, str]
     description: str
 
 
@@ -126,3 +127,20 @@ class ModelResponseModel(BaseModel):
 class ModelResponse(BaseModel):
     object: str = "list"
     data: list[ModelResponseModel] = []
+
+
+##########
+# AUDIO
+##########
+
+class CreateTranscriptionRequest(BaseModel):
+    file: UploadFile = Form(...)
+    model: str = Form(...)
+    language: Optional[str] = Form("") 
+    prompt: Optional[str] = Form("") 
+    response_format: Optional[str] = Form("") 
+    temperature: Optional[float] = Form(1) 
+
+
+class CreateTranscriptionResponse(BaseModel):
+    text: str
