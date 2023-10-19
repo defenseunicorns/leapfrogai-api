@@ -1,4 +1,4 @@
-FROM cgr.dev/chainguard/python:latest-dev as builder
+FROM ghcr.io/defenseunicorns/leapfrogai/python:3.11-dev-amd64 as builder
 
 WORKDIR /leapfrogai
 
@@ -6,7 +6,7 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt --user
 
-FROM cgr.dev/chainguard/python:latest
+FROM ghcr.io/defenseunicorns/leapfrogai/python:3.11-amd64
 
 WORKDIR /leapfrogai
 
