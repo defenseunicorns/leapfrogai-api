@@ -24,8 +24,8 @@ test:
 dev:
 	uvicorn main:app --port 3000 --reload
 
-make docker-build:
+docker-build:
 	docker build -t ghcr.io/defenseunicorns/leapfrogai-api:${VERSION} .
 
-make docker-push:
+docker-push:
 	docker push ghcr.io/defenseunicorns/leapfrogai-api:${VERSION}
