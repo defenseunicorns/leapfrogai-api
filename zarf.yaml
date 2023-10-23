@@ -2,7 +2,7 @@
 
 kind: ZarfPackageConfig
 metadata:
-  name: leapfrogai
+  name: leapfrogai-api
   description: "LeapfrogAI"
   version: 0.3.3
   architecture: amd64
