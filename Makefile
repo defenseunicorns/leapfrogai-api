@@ -1,4 +1,4 @@
-VERSION := $(shell git describe --abbrev=0 --tags)
+VERSION ?= $(shell git describe --abbrev=0 --tags)
 
 create-venv:
 	python -m venv .venv
