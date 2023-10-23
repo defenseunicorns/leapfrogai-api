@@ -37,6 +37,10 @@ class Config:
         # ensure the config file exists
         if not os.path.exists(config_path):
             logging.warn(f"Config file not found at %s", config_path)
+
+            # Default to the repeater model
+            # TODO: Eventually remove this once dynamic model loading is a thing
+            self.populate_repeater_model()
             return "TODO: Return an error?"
 
         # load the config file into the config object
@@ -51,3 +55,9 @@ class Config:
                 name=m["name"],
                 backend=m["backend"],
             )
+
+    def populate_repeater_model(self):
+        self.models["repeater"] = Model(
+            name="repeater",
+            backend="repeater:50051"
+        )

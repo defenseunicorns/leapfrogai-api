@@ -12,5 +12,9 @@ app = FastAPI()
 async def healthz():
     return {"status": "ok"}
 
+@app.get("/models")
+async def models():
+    return get_model_config()
+
 app.include_router(openai_router)
 get_model_config().load()
