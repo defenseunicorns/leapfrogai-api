@@ -2,7 +2,9 @@ import logging
 import os
 from typing import List
 
+import toml
 import yaml
+import glob
 
 
 class Model:
@@ -31,33 +33,43 @@ class Config:
 
     def load(self, directory="", filename="config.yaml"):
         directory = os.environ.get("LFAI_CONFIG_PATH", directory)
-        config_path = os.path.join(directory, filename)
-        logging.info(f"Loading config from {config_path}")
+        env_filename = os.environ.get("LFAI_CONFIG_FILENAME", filename)
+ 
+        if env_filename != None and env_filename != "":
+            filename = env_filename
 
-        # ensure the config file exists
-        if not os.path.exists(config_path):
-            logging.warn(f"Config file not found at %s", config_path)
+        if not os.path.exists(directory):
+            return "THE CONFIG DIRECTORY DOES NOT EXIST"
 
-            # Default to the repeater model
-            # TODO: Eventually remove this once dynamic model loading is a thing
-            self.populate_repeater_model()
-            return "TODO: Return an error?"
+        config_files = glob.glob(os.path.join(directory, filename))
 
-        # load the config file into the config object
-        with open(config_path) as c:
-            loaded_artifact = yaml.safe_load(c)
+        for config_path in config_files:
+            # ensure the config file exists
+            # print(f"@JPERRY the config_path is {config_path}")
+            if not os.path.exists(config_path):
+                logging.warn(f"Config file not found at %s", config_path)
+                return "TODO: Return an error?"
 
-            self.parse_models(loaded_artifact)
+            # load the config file into the config object
+            with open(config_path) as c:
+                # Load the file into a python object
+                loaded_artifact = {}
+                if config_path.endswith(".toml"):
+                    loaded_artifact = toml.load(c)
+                elif config_path.endswith(".yaml"):
+                    loaded_artifact = yaml.safe_load(c)
+                else:
+                    print(f"Unsupported file type: {config_path}")
+
+                # parse the object into our config
+                self.parse_models(loaded_artifact)
+
+        return self
+
 
     def parse_models(self, loaded_artifact):
         for m in loaded_artifact["models"]:
-            self.models[m["name"]] = Model(
-                name=m["name"],
-                backend=m["backend"],
-            )
+            model_config = Model(name=m["name"],
+                                 backend=m["backend"])
 
-    def populate_repeater_model(self):
-        self.models["repeater"] = Model(
-            name="repeater",
-            backend="repeater:50051"
-        )
+            self.models[m["name"]] = model_config

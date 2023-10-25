@@ -34,15 +34,19 @@ async def stream_completion(model: Model, request: leapfrogai.CompletionRequest)
 async def completion(model: Model, request: leapfrogai.CompletionRequest):
     async with grpc.aio.insecure_channel(model.backend) as channel:
         stub = leapfrogai.CompletionServiceStub(channel)
-        response: leapfrogai.CompletionResponse = stub.Complete(request)
+        response: leapfrogai.CompletionResponse = await stub.Complete(request)
 
+        print("@ JPERRY WE ARE IN THE COMPLETION CODE: response", response)
+        print(f"The text from the first choice: {response.choices[0].text}")
+        print(f"The finish reason for the first choice: {response.choices[0].finish_reason}")
         return CompletionResponse(
             model=model.name,
             choices=[
                 CompletionChoice(
                     index=0,
                     text=response.choices[0].text,
-                    finish_reason=response.choices[0].finish_reason,
+                    finish_reason=str(response.choices[0].finish_reason),
+                    logprobs=None,
                 )
             ],
         )
@@ -63,8 +67,8 @@ async def stream_chat_completion(
 async def chat_completion(model: Model, request: leapfrogai.ChatCompletionRequest):
     async with grpc.aio.insecure_channel(model.backend) as channel:
         stub = leapfrogai.CompletionServiceStub(channel)
-        response: leapfrogai.ChatCompletionResponse = stub.Complete(request)
-
+        response: leapfrogai.ChatCompletionResponse = await stub.Complete(request)
+        
         return ChatCompletionResponse(
             model=model.name,
             choices=[

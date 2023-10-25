@@ -14,7 +14,8 @@ async def healthz():
 
 @app.get("/models")
 async def models():
-    return get_model_config()
+    return get_model_config().load()
+
 
 app.include_router(openai_router)
 get_model_config().load()

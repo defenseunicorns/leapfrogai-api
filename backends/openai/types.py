@@ -27,8 +27,8 @@ class CompletionRequest(BaseModel):
 class CompletionChoice(BaseModel):
     index: int
     text: str
-    logprobs: object | None
-    finish_reason: str
+    logprobs: object = None
+    finish_reason: str = ""
 
 
 class CompletionResponse(BaseModel):
@@ -37,7 +37,7 @@ class CompletionResponse(BaseModel):
     created: int = 0
     model: str = ""
     choices: list[CompletionChoice]
-    usage: Usage
+    usage: Usage = None
 
 
 ##########
