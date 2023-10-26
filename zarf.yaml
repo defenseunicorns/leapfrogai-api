@@ -16,5 +16,5 @@ components:
       localPath: chart
       version: 0.3.3
     images:
-      - "ghcr.io/defenseunicorns/leapfrogai-api:0.1.1"
+      - "ghcr.io/defenseunicorns/leapfrogai-api:0.1.2"
       - "registry1.dso.mil/ironbank/kiwigrid/k8s-sidecar:1.23.3"
