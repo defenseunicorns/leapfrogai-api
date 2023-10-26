@@ -45,7 +45,6 @@ class Config:
 
         for config_path in config_files:
             # ensure the config file exists
-            # print(f"@JPERRY the config_path is {config_path}")
             if not os.path.exists(config_path):
                 logging.warn(f"Config file not found at %s", config_path)
                 return "TODO: Return an error?"
