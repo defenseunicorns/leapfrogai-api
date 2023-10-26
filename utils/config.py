@@ -59,7 +59,9 @@ class Config:
                 elif config_path.endswith(".yaml"):
                     loaded_artifact = yaml.safe_load(c)
                 else:
+                    # TODO: Return an error ???
                     print(f"Unsupported file type: {config_path}")
+                    continue
 
                 # parse the object into our config
                 self.parse_models(loaded_artifact)
