@@ -36,8 +36,10 @@ spec:
           image: ghcr.io/defenseunicorns/leapfrogai-api:{{ .Values.image.tag }}
           imagePullPolicy: Always
           env:
-          - name: CONFIG_PATH
+          - name: LFAI_CONFIG_PATH
             value: /config/
+          - name: LFAI_CONFIG_FILENAME
+            value: "*.toml"
           - name: GIN_MODE
             value: release
           - name: PORT
