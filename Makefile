@@ -28,4 +28,4 @@ docker-build:
 	docker build -t ghcr.io/defenseunicorns/leapfrogai-api:${VERSION} .
 
 docker-push:
-	docker push ghcr.io/defenseunicorns/leapfrogai-api:${VERSION}
+	docker push ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:${VERSION}
