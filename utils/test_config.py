@@ -20,4 +20,4 @@ class TestConfig:
                 )
             }
         )
-        assert c.model_backend("test") == "grpc://localhost:50051"
+        assert c.get_model_backend("test") == "grpc://localhost:50051"
