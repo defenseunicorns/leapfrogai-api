@@ -16,7 +16,7 @@ build-requirements:
 	pip-compile -o requirements.txt pyproject.toml
 
 build-requirements-dev:
-	pip-compile --extra dev -o requirements-dev.txt pyproject.toml --alow-unsafe
+	pip-compile --extra dev -o requirements-dev.txt pyproject.toml --allow-unsafe
 
 test:
 	pytest **/*.py

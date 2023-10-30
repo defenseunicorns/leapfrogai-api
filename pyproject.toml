@@ -17,3 +17,6 @@ dev = ["pip-tools", "pytest", "black", "isort"]
 
 [tool.pip-tools]
 generate-hashes = true
+
+[tool.setuptools.packages.find]
+exclude = ["chart"]
