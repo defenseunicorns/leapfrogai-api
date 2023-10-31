@@ -97,7 +97,7 @@ def read_chunks(file: BinaryIO, chunk_size: int) -> Iterator[leapfrogai.AudioReq
         yield leapfrogai.AudioRequest(chunk_data=chunk)
 
 
-@router.post("/transcribe")
+@router.post("/audio/transcriptions")
 async def transcribe(
     model_config: Annotated[Config, Depends(get_model_config)],
     req: CreateTranscriptionRequest = Depends()
