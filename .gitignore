@@ -4,3 +4,4 @@ __pycache__
 .vscode
 config.yaml
 *.tar.zst
+.python-version
