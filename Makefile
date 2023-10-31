@@ -1,4 +1,4 @@
-VERSION := $(shell git describe --abbrev=0 --tags)
+VERSION ?= $(shell git describe --abbrev=0 --tags)
 
 create-venv:
 	python -m venv .venv
@@ -16,7 +16,7 @@ build-requirements:
 	pip-compile -o requirements.txt pyproject.toml
 
 build-requirements-dev:
-	pip-compile --extra dev -o requirements-dev.txt pyproject.toml
+	pip-compile --extra dev -o requirements-dev.txt pyproject.toml --allow-unsafe
 
 test:
 	pytest **/*.py
@@ -24,8 +24,8 @@ test:
 dev:
 	uvicorn main:app --port 3000 --reload
 
-make docker-build:
-	docker build -t ghcr.io/defenseunicorns/leapfrogai-api:${VERSION} .
+docker-build:
+	docker build -t ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:${VERSION} .
 
-make docker-push:
-	docker push ghcr.io/defenseunicorns/leapfrogai-api:${VERSION}
+docker-push:
+	docker push ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:${VERSION}

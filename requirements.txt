@@ -288,6 +288,10 @@ starlette==0.27.0 \
     --hash=sha256:6a6b0d042acb8d469a01eba54e9cda6cbd24ac602c4cd016723117d6a7e73b75 \
     --hash=sha256:918416370e846586541235ccd38a474c08b80443ed31c578a418e2209b3eef91
     # via fastapi
+toml==0.10.2 \
+    --hash=sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b \
+    --hash=sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f
+    # via leapfrogai-api (pyproject.toml)
 typing-extensions==4.7.1 \
     --hash=sha256:440d5dd3af93b060174bf433bccd69b0babc3b15b1a8dca43789fd7f61514b36 \
     --hash=sha256:b75ddc264f0ba5615db7ba217daeb99701ad295353c45f9e95963337ceeeffb2

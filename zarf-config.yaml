@@ -1,0 +1,4 @@
+package:
+  create: 
+    set:
+    max_package_size: "1000000000"

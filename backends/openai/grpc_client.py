@@ -34,7 +34,7 @@ async def stream_completion(model: Model, request: leapfrogai.CompletionRequest)
 async def completion(model: Model, request: leapfrogai.CompletionRequest):
     async with grpc.aio.insecure_channel(model.backend) as channel:
         stub = leapfrogai.CompletionServiceStub(channel)
-        response: leapfrogai.CompletionResponse = stub.Complete(request)
+        response: leapfrogai.CompletionResponse = await stub.Complete(request)
 
         return CompletionResponse(
             model=model.name,
@@ -42,7 +42,8 @@ async def completion(model: Model, request: leapfrogai.CompletionRequest):
                 CompletionChoice(
                     index=0,
                     text=response.choices[0].text,
-                    finish_reason=response.choices[0].finish_reason,
+                    finish_reason=str(response.choices[0].finish_reason),
+                    logprobs=None,
                 )
             ],
         )
@@ -63,7 +64,7 @@ async def stream_chat_completion(
 async def chat_completion(model: Model, request: leapfrogai.ChatCompletionRequest):
     async with grpc.aio.insecure_channel(model.backend) as channel:
         stub = leapfrogai.CompletionServiceStub(channel)
-        response: leapfrogai.ChatCompletionResponse = stub.Complete(request)
+        response: leapfrogai.ChatCompletionResponse = await stub.Complete(request)
 
         return ChatCompletionResponse(
             model=model.name,

@@ -1,0 +1,17 @@
+domain: bigbang.dev
+
+image: 
+  lfaiAPITag: 0.1.2
+  kiwigridTag: 1.23.3
+
+istio:
+  enabled: false
+  gateway: tenant
+  injection: disabled
+
+api:
+  replicas: 1
+  port: 8080
+
+monitoring:
+  enabled: false
