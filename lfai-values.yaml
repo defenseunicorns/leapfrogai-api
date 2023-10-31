@@ -1,0 +1,10 @@
+domain: ###ZARF_VAR_DOMAIN###
+
+image:
+  lfaiAPITag: ###ZARF_CONST_LEAPFROGAI_API_VERSION###
+  kiwigridTag: ###ZARF_CONST_KIWIGRID_VERSION###
+
+istio:
+  enabled: ###ZARF_VAR_ISTIO_ENABLED###
+  gateway: ###ZARF_VAR_ISTIO_GATEWAY###
+  injection: ###ZARF_VAR_ISTIO_INJECTION###

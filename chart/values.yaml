@@ -1,11 +1,13 @@
 domain: bigbang.dev
 
 image: 
-  tag: 0.1.2
+  lfaiAPITag: 0.1.2
+  kiwigridTag: 1.23.3
 
 istio:
   enabled: false
   gateway: tenant
+  injection: disabled
 
 api:
   replicas: 1

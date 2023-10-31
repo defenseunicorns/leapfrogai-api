@@ -17,7 +17,7 @@ spec:
       serviceAccountName: read-configmaps
       containers:
         - name: sidecar
-          image: registry1.dso.mil/ironbank/kiwigrid/k8s-sidecar:1.23.3
+          image: registry1.dso.mil/ironbank/kiwigrid/k8s-sidecar:{{ .Values.image.kiwigridTag }}
           volumeMounts:
           - name:  api-model
             mountPath: /config/
@@ -33,15 +33,13 @@ spec:
           - name: NAMESPACE
             value: leapfrogai
         - name: api-container
-          image: ghcr.io/defenseunicorns/leapfrogai-api:{{ .Values.image.tag }}
+          image: ghcr.io/defenseunicorns/leapfrogai-api:{{ .Values.image.lfaiAPITag }}
           imagePullPolicy: Always
           env:
           - name: LFAI_CONFIG_PATH
             value: /config/
           - name: LFAI_CONFIG_FILENAME
             value: "*.toml"
-          - name: GIN_MODE
-            value: release
           - name: PORT
             value: "{{ .Values.api.port }}"
           ports:

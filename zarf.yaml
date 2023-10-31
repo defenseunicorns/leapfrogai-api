@@ -7,6 +7,22 @@ metadata:
   version: 0.3.3
   architecture: amd64
 
+constants:
+  - name: LEAPFROGAI_API_VERSION
+    value: "0.1.2"
+  - name: KIWIGRID_VERSION
+    value: "1.23.3"
+
+variables:
+  - name: ISTIO_ENABLED
+    default: "false"
+  - name: ISTIO_GATEWAY
+    default: "tenant"
+  - name: ISTIO_INJECTION
+    default: "disabled"
+  - name: DOMAIN
+    default: "bigbang.dev"
+
 components:
   - name: leapfrogai
     required: true
@@ -15,6 +31,8 @@ components:
       namespace: leapfrogai
       localPath: chart
       version: 0.3.3
+      valuesFiles:
+        - "lfai-values.yaml"
     images:
       - "ghcr.io/defenseunicorns/leapfrogai-api:0.1.2"
       - "registry1.dso.mil/ironbank/kiwigrid/k8s-sidecar:1.23.3"
