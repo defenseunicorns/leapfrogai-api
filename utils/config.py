@@ -27,7 +27,7 @@ class Config:
     def __str__(self):
         return f"Models: {self.models}"
 
-    async def watch_and_load_configs(self, directory="", filename="config.yaml"):
+    async def watch_and_load_configs(self, directory=".", filename="config.yaml"):
         # Get the config directory and filename from the environment variables if provided
         env_directory = os.environ.get("LFAI_CONFIG_PATH", directory)
         if env_directory != None and env_directory != "":
