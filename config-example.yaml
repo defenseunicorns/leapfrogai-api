@@ -3,3 +3,7 @@ models:
   backend: leapfrog-01:50051
 - name: all-MiniLM-L6-v2
   backend: localhost:50051
+- name: whisper
+  backend: localhost:50051
+- name: ctransformers
+  backend: localhost:50051
