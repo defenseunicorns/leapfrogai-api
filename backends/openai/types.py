@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Dict, Optional, Annotated
 from dataclasses import dataclass
 
@@ -150,7 +152,7 @@ class CreateTranscriptionRequest(BaseModel):
         prompt: Optional[str] = Form(""),
         response_format: Optional[str] = Form(""),
         temperature: Optional[float] = Form(1),
-    ) -> "CreateTranscriptionRequest":
+    ) -> CreateTranscriptionRequest:
         return cls(
             file=file,
             model=model,
