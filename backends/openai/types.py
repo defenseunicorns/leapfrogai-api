@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Dict, Optional, Annotated
 from dataclasses import dataclass
 
@@ -134,13 +136,31 @@ class ModelResponse(BaseModel):
 ##########
 
 class CreateTranscriptionRequest(BaseModel):
-    file: UploadFile = Form(...)
-    model: str = Form(...)
-    language: Optional[str] = Form("") 
-    prompt: Optional[str] = Form("") 
-    response_format: Optional[str] = Form("") 
-    temperature: Optional[float] = Form(1) 
+    file: UploadFile
+    model: str
+    language: str
+    prompt: str
+    response_format: str
+    temperature: float
 
+    @classmethod
+    def as_form(
+        cls,
+        file: UploadFile = File(...),
+        model: str = Form(...),
+        language: Optional[str] = Form(""),
+        prompt: Optional[str] = Form(""),
+        response_format: Optional[str] = Form(""),
+        temperature: Optional[float] = Form(1),
+    ) -> CreateTranscriptionRequest:
+        return cls(
+            file=file,
+            model=model,
+            language=language,
+            prompt=prompt,
+            response_format=response_format,
+            temperature=temperature,
+        )
 
 class CreateTranscriptionResponse(BaseModel):
     text: str
