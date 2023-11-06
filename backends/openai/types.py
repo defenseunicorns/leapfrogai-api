@@ -145,11 +145,11 @@ class CreateTranscriptionRequest(BaseModel):
     def as_form(
         cls,
         file: UploadFile = File(...),
-        model: str = Form(...) ,
-        language: Optional[str] = Form("") ,
-        prompt: Optional[str] = Form("") ,
-        response_format: Optional[str] = Form("") ,
-        temperature: Optional[float] = Form(1) ,
+        model: str = Form(...),
+        language: Optional[str] = Form(""),
+        prompt: Optional[str] = Form(""),
+        response_format: Optional[str] = Form(""),
+        temperature: Optional[float] = Form(1),
     ) -> "CreateTranscriptionRequest":
         return cls(
             file=file,
