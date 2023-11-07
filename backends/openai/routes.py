@@ -38,7 +38,7 @@ async def complete(
 
     request = leapfrogai.CompletionRequest(
         prompt=req.prompt,
-        max_new_tokens=req.max_new_tokens,
+        max_new_tokens=req.max_tokens,
         temperature=req.temperature,
     )
 

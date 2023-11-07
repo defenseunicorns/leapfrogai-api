@@ -22,7 +22,7 @@ class CompletionRequest(BaseModel):
     model: str
     prompt: str | list[int]
     stream: bool | None = False
-    max_new_tokens: int | None = 16
+    max_tokens: int | None = 16
     temperature: float | None = 1.0
 
 
