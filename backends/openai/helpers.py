@@ -1,6 +1,7 @@
 import grpc
 import leapfrogai
 
+from typing import Iterator, BinaryIO
 from .types import (
     ChatCompletionResponse,
     ChatDelta,
@@ -73,3 +74,11 @@ def grpc_chat_role(role: str) -> leapfrogai.ChatRole:
             return leapfrogai.ChatRole.FUNCTION
         case "assistant":
             return leapfrogai.ChatRole.ASSISTANT
+
+# read_chunks is a helper method that chunks the bytes of a file (audio file) into a iterator of AudioRequests
+def read_chunks(file: BinaryIO, chunk_size: int) -> Iterator[leapfrogai.AudioRequest]:
+    while True:
+        chunk = file.read(chunk_size)
+        if not chunk:
+            break
+        yield leapfrogai.AudioRequest(chunk_data=chunk)
