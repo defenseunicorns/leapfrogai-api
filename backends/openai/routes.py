@@ -1,7 +1,7 @@
-from typing import Annotated, Iterator, BinaryIO
+from typing import Annotated
 from itertools import chain
 import leapfrogai
-from fastapi import Depends, File, UploadFile, Form
+from fastapi import Depends, HTTPException
 
 from utils import get_model_config
 from utils.config import Config
@@ -14,7 +14,7 @@ from .grpc_client import (
     stream_completion,
     create_transcription,
 )
-from .helpers import grpc_chat_role
+from .helpers import grpc_chat_role, read_chunks
 from .types import (
     ChatCompletionRequest,
     CompletionRequest,
@@ -86,15 +86,6 @@ async def embeddings(
     request = leapfrogai.EmbeddingRequest(inputs=[req.input])
     model = model_config.models[req.model]
     return await create_embeddings(model, request)
-
-
-# read_chunks is a helper method that chunks the bytes of a file (audio file) into a iterator of AudioRequests
-def read_chunks(file: BinaryIO, chunk_size: int) -> Iterator[leapfrogai.AudioRequest]:
-    while True:
-        chunk = file.read(chunk_size)
-        if not chunk:
-            break
-        yield leapfrogai.AudioRequest(chunk_data=chunk)
 
 
 @router.post("/audio/transcriptions")
