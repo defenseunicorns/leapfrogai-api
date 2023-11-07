@@ -31,7 +31,11 @@ from .types import (
 async def complete(
     req: CompletionRequest, model_config: Annotated[Config, Depends(get_model_config)]
 ):
-    model = model_config.models[req.model]
+    # Get the model backend configuration
+    model = model_config.get_model_backend(req.model)
+    if model == None:
+        raise HTTPException(status_code=405, detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}")
+
     request = leapfrogai.CompletionRequest(
         prompt=req.prompt,
         max_new_tokens=req.max_new_tokens,
@@ -49,7 +53,11 @@ async def complete(
     req: ChatCompletionRequest,
     model_config: Annotated[Config, Depends(get_model_config)],
 ):
-    model = model_config.models[req.model]
+    # Get the model backend configuration
+    model = model_config.get_model_backend(req.model)
+    if model == None:
+        raise HTTPException(status_code=405, detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}")
+
     chat_items: list[leapfrogai.ChatItem] = []
     for m in req.messages:
         chat_items.append(
@@ -83,8 +91,12 @@ async def embeddings(
     req: CreateEmbeddingRequest,
     model_config: Annotated[Config, Depends(get_model_config)],
 ) -> CreateEmbeddingResponse:
+    # Get the model backend configuration
+    model = model_config.get_model_backend(req.model)
+    if model == None:
+        raise HTTPException(status_code=405, detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}")
+
     request = leapfrogai.EmbeddingRequest(inputs=[req.input])
-    model = model_config.models[req.model]
     return await create_embeddings(model, request)
 
 
@@ -93,7 +105,10 @@ async def transcribe(
     model_config: Annotated[Config, Depends(get_model_config)],
     req: CreateTranscriptionRequest = Depends(CreateTranscriptionRequest.as_form)
 ) -> CreateTranscriptionResponse:
-    model = model_config.models[req.model]
+    # Get the model backend configuration
+    model = model_config.get_model_backend(req.model)
+    if model == None:
+        raise HTTPException(status_code=405, detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}")
 
     # Create a request that contains the metadata for the AudioRequest
     audio_metadata = leapfrogai.AudioMetadata(prompt=req.prompt,
