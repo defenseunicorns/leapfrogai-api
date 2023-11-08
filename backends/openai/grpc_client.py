@@ -1,8 +1,8 @@
+from typing import Iterator
+
 import grpc
 import leapfrogai
 from fastapi.responses import StreamingResponse
-
-from typing import Iterator
 
 from backends.openai.helpers import recv_chat, recv_completion
 from backends.openai.types import (
@@ -12,8 +12,8 @@ from backends.openai.types import (
     CompletionChoice,
     CompletionResponse,
     CreateEmbeddingResponse,
-    EmbeddingResponseData,
     CreateTranscriptionResponse,
+    EmbeddingResponseData,
     Usage,
 )
 from utils.config import Model
@@ -63,9 +63,8 @@ async def stream_chat_completion(
 # TODO: CLean up completion() and stream_completion() to reduce code duplication
 async def chat_completion(model: Model, request: leapfrogai.ChatCompletionRequest):
     async with grpc.aio.insecure_channel(model.backend) as channel:
-        stub = leapfrogai.CompletionServiceStub(channel)
-        response: leapfrogai.ChatCompletionResponse = await stub.Complete(request)
-
+        stub = leapfrogai.ChatCompletionServiceStub(channel)
+        response: leapfrogai.ChatCompletionResponse = await stub.ChatComplete(request)
         return ChatCompletionResponse(
             model=model.name,
             choices=[
@@ -95,7 +94,9 @@ async def create_embeddings(model: Model, request: leapfrogai.EmbeddingRequest):
         )
 
 
-async def create_transcription(model: Model, request: Iterator[leapfrogai.AudioRequest]):
+async def create_transcription(
+    model: Model, request: Iterator[leapfrogai.AudioRequest]
+):
     async with grpc.aio.insecure_channel(model.backend) as channel:
         stub = leapfrogai.AudioStub(channel)
         response: leapfrogai.AudioResponse = await stub.Transcribe(request)
