@@ -1,11 +1,11 @@
+import fnmatch
+import glob
 import logging
 import os
 from typing import List
+
 import toml
 import yaml
-import glob
-import fnmatch
-
 from watchfiles import awatch
 
 
@@ -42,7 +42,7 @@ class Config:
         # Watch the directory for changes until the end of time
         while True:
             async for changes in awatch(directory, recursive=False, step=150):
-                # get a unique list of files that have been updated 
+                # get a unique list of files that have been updated
                 # (awatch can return duplicates depending on the type of updates that happen)
                 unique_files = set()
                 for change in changes:
@@ -54,10 +54,6 @@ class Config:
                 # load all the updated config files
                 for match in filtered_matches:
                     self.load_config_file(os.path.join(directory, match))
-
-
-
-
 
     def load_config_file(self, config_path: str):
         # load the config file into the config object
@@ -78,7 +74,6 @@ class Config:
 
         return
 
-
     def load_all_configs(self, directory="", filename="config.yaml"):
         if not os.path.exists(directory):
             return "THE CONFIG DIRECTORY DOES NOT EXIST"
@@ -92,17 +87,14 @@ class Config:
 
         return
 
-
-    def get_model_backend(self, model: str) -> str | None:
+    def get_model_backend(self, model: str) -> Model | None:
         if model in self.models:
-            return self.models[model].backend
+            return self.models[model]
         else:
             return None
 
-
     def parse_models(self, loaded_artifact):
         for m in loaded_artifact["models"]:
-            model_config = Model(name=m["name"],
-                                 backend=m["backend"])
+            model_config = Model(name=m["name"], backend=m["backend"])
 
             self.models[m["name"]] = model_config
