@@ -1,0 +1,41 @@
+name: Test API
+on:
+  pull_request
+
+jobs:
+  e2e-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          download-init-package: true
+
+      - name: Install Zarf
+        uses: defenseunicorns/setup-zarf@main
+
+      - name: Build leapfrogai image
+        run: make docker-build VERSION=local
+
+      - name: Build leapfrogai zarf package
+        run: make zarf-build VERSION=local
+
+      - name: Setup K3D
+        uses: defenseunicorns/zarf/.github/actions/k3d@main
+
+      - name: Initialize zarf
+        run: zarf init --confirm
+
+      - name: Deploy LFAI Package 
+        run: zarf package deploy zarf-package-leapfrogai-api-amd64*.tar.zst --confirm
+
+      - name: Debug Deployment
+        run: |
+          zarf package list
+          zarf connect list
+          
+
+
+
+
+
