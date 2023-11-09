@@ -30,10 +30,10 @@ make dev
 
 ```bash
 # Build the docker image
-docker build -t ghcr.io/defenseunicorns/leapfrogai/leapfrog-api:latest .
+docker build -t ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:latest .
 
 # Run the docker container
-docker run -p 8080:8080 ghcr.io/defenseunicorns/leapfrogai/leapfrog-api:latest
+docker run -p 8080:8080 ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:latest
 ```
 
 1. Create `config.yaml`, see `config-example.yaml` for common examples.
