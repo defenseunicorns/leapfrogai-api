@@ -18,8 +18,9 @@ build-requirements:
 build-requirements-dev:
 	pip-compile --extra dev -o requirements-dev.txt pyproject.toml --allow-unsafe
 
+.PHONY: test
 test:
-	pytest **/*.py
+	pytest **/*.py -v
 
 dev:
 	uvicorn main:app --port 3000 --reload

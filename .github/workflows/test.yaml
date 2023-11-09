@@ -17,7 +17,7 @@ jobs:
           cache: 'pip'
 
       - name: Install Python Deps
-        run: pip install -r requirements.txt
+        run: pip install -r requirements-dev.txt requirements.txt
      
       - name: Run Pytest
-        run: python -m pytest -v
+        run: python -m pytest . -v
