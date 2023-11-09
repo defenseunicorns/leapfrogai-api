@@ -20,7 +20,7 @@ build-requirements-dev:
 
 .PHONY: test
 test:
-	pytest **/*.py -v
+	pytest . -v
 
 dev:
 	uvicorn main:app --port 3000 --reload

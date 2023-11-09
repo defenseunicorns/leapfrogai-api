@@ -1,14 +1,20 @@
-name: Run tests
+name: pytest
 on: [pull_request]
 
 jobs:
-  Run-Tests:
-    name: Run tests
+  pytest:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
           python-version-file: 'pyproject.toml'
+
+      - name: Run Repeater
+        run: docker run -p 50051:50051 -d ghcr.io/defenseunicorns/leapfrogai/repeater:0.3.3
+
       - run: make requirements-dev requirements
       - run: make test
+        env:
+          LFAI_RUN_DOCKER_TESTS: true

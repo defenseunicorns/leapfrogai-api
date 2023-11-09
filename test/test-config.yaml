@@ -1,4 +1,0 @@
-models:
-- name: whisper-1
-  backend: localhost:50052
-  
