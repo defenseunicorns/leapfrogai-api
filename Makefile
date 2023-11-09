@@ -29,3 +29,6 @@ docker-build:
 
 docker-push:
 	docker push ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:${VERSION}
+
+zarf-build:
+	zarf package create . --confirm --set LFAI_API_VERSION=${VERSION}
