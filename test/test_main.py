@@ -2,6 +2,7 @@ from fastapi.testclient import TestClient
 from main import app
 import pytest
 import os
+import json
 
 os.environ["LFAI_CONFIG_FILENAME"] = "test-config.yaml"
 os.environ["LFAI_CONFIG_PATH"] = os.path.join(os.path.dirname(__file__), "fixtures")
