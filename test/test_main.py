@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 from main import app
+import backends.openai.types as lfai_types
 import pytest
 import os
 import json
@@ -113,7 +114,7 @@ def test_stream_completion():
                     choices = stream_response.get("choices")
                     assert len(choices) == 1
                     assert "text" in choices[0]
-                    assert choices[0].get("text") == str(iter_length)
+                    assert choices[0].get("text") == input_text 
                     iter_length += 1
 
         # The repeater only response with 5 messages
@@ -121,10 +122,10 @@ def test_stream_completion():
 
 
 @pytest.mark.skipif(os.environ.get("LFAI_RUN_DOCKER_TESTS") != "true", reason="because I said so")
-def test_():
+def test_chat_completion():
     with TestClient(app) as client:
 
-        input_content = "this ist he chat completion input."
+        input_content = "this is the chat completion input."
         input_obj = {
             "model": "repeater",
             "messages": [
@@ -151,3 +152,47 @@ def test_():
 
         # validate that the repeater repeated
         assert response_choices[0].get("message").get("content") == input_content
+
+
+
+@pytest.mark.skipif(os.environ.get("LFAI_RUN_DOCKER_TESTS") != "true", reason="because I said so")
+def test_stream_chat_completion():
+    with TestClient(app) as client:
+        input_content = "this is the stream chat completion input."
+
+        chat_completion_request = lfai_types.ChatCompletionRequest(
+            model="repeater",
+            messages=[
+                lfai_types.ChatMessage(
+                    role="user",
+                    content=input_content
+                )
+            ],
+            stream=True,
+        )
+
+        response = client.post("/openai/v1/chat/completions", json=chat_completion_request.model_dump())
+        assert response.status_code == 200
+        assert response.headers.get('content-type') == "text/event-stream; charset=utf-8"
+
+        # parse through the streamed response
+        iter_length = 0
+        iter_lines = response.iter_lines()
+        for line in iter_lines:
+            # skip the empty, and non-data lines
+            if ": " in line:
+                strings = line.split(": ", 1)
+
+                # Process all the data responses that is not the sig_stop signal
+                if strings[0] == "data" and strings[1] != "[DONE]":
+                    stream_response = json.loads(strings[1])
+                    assert "choices" in stream_response
+                    choices = stream_response.get("choices")
+                    assert len(choices) == 1
+                    assert "delta" in choices[0]
+                    assert "content" in choices[0].get("delta")
+                    assert choices[0].get("delta").get("content") == input_content
+                    iter_length += 1
+
+        # The repeater only response with 5 messages
+        assert iter_length == 5
