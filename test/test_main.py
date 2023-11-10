@@ -36,6 +36,14 @@ def test_routes():
 
     assert len(expected_routes) == 0
 
+
+def test_healthz():
+    with TestClient(app) as client:
+        response = client.get("/healthz")
+        assert response.status_code == 200
+        assert response.json() == {"status": "ok"}
+
+
 @pytest.mark.skipif(os.environ.get("LFAI_RUN_DOCKER_TESTS") != "true", reason="because I said so")
 def test_completion():
     with TestClient(app) as client:
