@@ -118,3 +118,36 @@ def test_stream_completion():
 
         # The repeater only response with 5 messages
         assert iter_length == 5
+
+
+@pytest.mark.skipif(os.environ.get("LFAI_RUN_DOCKER_TESTS") != "true", reason="because I said so")
+def test_():
+    with TestClient(app) as client:
+
+        input_content = "this ist he chat completion input."
+        input_obj = {
+            "model": "repeater",
+            "messages": [
+                {
+                    "role": "user",
+                    "content": input_content
+                }
+            ]
+        }
+        response = client.post("/openai/v1/chat/completions", json=input_obj)
+        assert response.status_code == 200
+
+        assert response
+
+        # parse through the chat completion response
+        response_obj = response.json()
+        assert "choices" in response_obj
+
+        # parse the choices from the response
+        response_choices = response_obj.get("choices")
+        assert len(response_choices) == 1
+        assert "message" in response_choices[0]
+        assert "content" in response_choices[0].get("message")
+
+        # validate that the repeater repeated
+        assert response_choices[0].get("message").get("content") == input_content

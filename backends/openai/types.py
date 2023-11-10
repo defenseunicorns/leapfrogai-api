@@ -76,7 +76,7 @@ class ChatCompletionRequest(BaseModel):
 class ChatChoice(BaseModel):
     index: int
     message: ChatMessage
-    finish_reason: str
+    finish_reason: str | None = ""
 
 
 class ChatStreamChoice(BaseModel):
@@ -96,7 +96,7 @@ class ChatCompletionResponse(BaseModel):
     choices: list[ChatChoice] | list[
         ChatStreamChoice
     ]  # TODO: @JPERRY look into this more, difference between streaming and not streaming
-    usage: Usage | None
+    usage: Usage | None = None
 
 
 class CreateEmbeddingRequest(BaseModel):

@@ -71,7 +71,8 @@ async def chat_completion(model: Model, request: leapfrogai.ChatCompletionReques
                 ChatChoice(
                     index=0,
                     message=ChatMessage(
-                        role=response.choices[0].chat_item.role,
+                        # TODO: Check on the typing here. chat_item.role is type ChatRole but we need a string
+                        role=str(response.choices[0].chat_item.role),
                         content=response.choices[0].chat_item.content,
                     ),
                 )
