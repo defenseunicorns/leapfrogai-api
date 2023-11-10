@@ -138,10 +138,10 @@ class ModelResponse(BaseModel):
 class CreateTranscriptionRequest(BaseModel):
     file: UploadFile
     model: str
-    language: str
-    prompt: str
-    response_format: str
-    temperature: float
+    language: str = ""
+    prompt: str = ""
+    response_format: str = ""
+    temperature: float = 1
 
     @classmethod
     def as_form(
