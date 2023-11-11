@@ -15,6 +15,7 @@ jobs:
         run: docker run -p 50051:50051 -d ghcr.io/defenseunicorns/leapfrogai/repeater:0.3.3
 
       - run: make requirements-dev requirements
+
       - run: make test
         env:
           LFAI_RUN_DOCKER_TESTS: true

@@ -44,16 +44,16 @@ def test_healthz():
         assert response.json() == {"status": "ok"}
 
 
-@pytest.mark.skipif(os.environ.get("LFAI_RUN_DOCKER_TESTS") != "true", reason="because I said so")
+@pytest.mark.skipif(os.environ.get("LFAI_RUN_REPEATER_TESTS") != "true", reason="LFAI_RUN_REPEATER_TESTS envvar was not set to true")
 def test_completion():
     with TestClient(app) as client:
         # Send request to client
         input_text = "This is the completion input text."
-        input_obj = {
-            "model": "repeater",
-            "prompt": input_text
-        }
-        response = client.post("/openai/v1/completions", json=input_obj)
+        completion_request = lfai_types.CompletionRequest(
+            model="repeater",
+            prompt=input_text,
+        )
+        response = client.post("/openai/v1/completions", json=completion_request.model_dump())
         assert response.status_code == 200
 
         # parse through the response
@@ -69,17 +69,17 @@ def test_completion():
         assert response_choices[0].get("text") == input_text
 
 
-@pytest.mark.skipif(os.environ.get("LFAI_RUN_DOCKER_TESTS") != "true", reason="because I said so")
+@pytest.mark.skipif(os.environ.get("LFAI_RUN_REPEATER_TESTS") != "true", reason="LFAI_RUN_REPEATER_TESTS envvar was not set to true")
 def test_embedding():
     expected_embedding=[0.0 for _ in range(10)]
 
     with TestClient(app) as client:
         # Send request to client
-        input_obj = {
-            "model": "repeater",
-            "input": "This isthe embedding input text."
-        }
-        response = client.post("/openai/v1/embeddings", json=input_obj)
+        embedding_request = lfai_types.CreateEmbeddingRequest(
+            model="repeater",
+            input="This is the embedding input text.",
+        )
+        response = client.post("/openai/v1/embeddings", json=embedding_request.model_dump())
         assert response.status_code == 200
 
         # parse through the response
@@ -93,17 +93,17 @@ def test_embedding():
         assert data_obj.get("embedding") == expected_embedding
 
 
-@pytest.mark.skipif(os.environ.get("LFAI_RUN_DOCKER_TESTS") != "true", reason="because I said so")
+@pytest.mark.skipif(os.environ.get("LFAI_RUN_REPEATER_TESTS") != "true", reason="LFAI_RUN_REPEATER_TESTS envvar was not set to true")
 def test_stream_completion():
     with TestClient(app) as client:
         # Send request to client
         input_text = "This is the completion input text."
-        input_obj = {
-            "model": "repeater",
-            "prompt": input_text,
-            "stream": True,
-        }
-        response = client.post("/openai/v1/completions", json=input_obj)
+        stream_completion_request = lfai_types.CompletionRequest(
+            model="repeater",
+            prompt=input_text,
+            stream=True,
+        )
+        response = client.post("/openai/v1/completions", json=stream_completion_request.model_dump())
         assert response.status_code == 200
         assert response.headers.get('content-type') == "text/event-stream; charset=utf-8"
 
@@ -129,21 +129,21 @@ def test_stream_completion():
         assert iter_length == 5
 
 
-@pytest.mark.skipif(os.environ.get("LFAI_RUN_DOCKER_TESTS") != "true", reason="because I said so")
+@pytest.mark.skipif(os.environ.get("LFAI_RUN_REPEATER_TESTS") != "true", reason="LFAI_RUN_REPEATER_TESTS envvar was not set to true")
 def test_chat_completion():
     with TestClient(app) as client:
 
         input_content = "this is the chat completion input."
-        input_obj = {
-            "model": "repeater",
-            "messages": [
-                {
-                    "role": "user",
-                    "content": input_content
-                }
-            ]
-        }
-        response = client.post("/openai/v1/chat/completions", json=input_obj)
+        chat_completion_request = lfai_types.ChatCompletionRequest(
+            model="repeater",
+            messages=[
+                lfai_types.ChatMessage(
+                    role="user",
+                    content=input_content
+                )
+            ],
+        )
+        response = client.post("/openai/v1/chat/completions", json=chat_completion_request.model_dump())
         assert response.status_code == 200
 
         assert response
@@ -163,7 +163,7 @@ def test_chat_completion():
 
 
 
-@pytest.mark.skipif(os.environ.get("LFAI_RUN_DOCKER_TESTS") != "true", reason="because I said so")
+@pytest.mark.skipif(os.environ.get("LFAI_RUN_REPEATER_TESTS") != "true", reason="LFAI_RUN_REPEATER_TESTS envvar was not set to true")
 def test_stream_chat_completion():
     with TestClient(app) as client:
         input_content = "this is the stream chat completion input."
