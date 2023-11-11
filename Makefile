@@ -10,7 +10,7 @@ requirements-dev:
 	python -m pip install -r requirements-dev.txt
 
 requirements:
-	pip-sync requirements.txt requirements-dev.txt
+	pip-sync requirements.txt
 
 build-requirements:
 	pip-compile -o requirements.txt pyproject.toml
