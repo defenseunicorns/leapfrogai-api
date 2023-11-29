@@ -1,4 +1,4 @@
-from typing import BinaryIO, Iterator
+from typing import BinaryIO, Iterator, Union
 
 import grpc
 import leapfrogai
@@ -63,7 +63,7 @@ async def recv_chat(
     yield "data: [DONE]\n\n"
 
 
-def grpc_chat_role(role: str) -> leapfrogai.ChatRole | None:
+def grpc_chat_role(role: str) -> Union[leapfrogai.ChatRole, None]:
     match role:
         case "user":
             return leapfrogai.ChatRole.USER  # type: ignore
