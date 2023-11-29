@@ -3,6 +3,7 @@ from typing import Iterator
 import grpc
 import leapfrogai
 from fastapi.responses import StreamingResponse
+from leapfrogai import ChatRole
 
 from backends.openai.helpers import recv_chat, recv_completion
 from backends.openai.types import (
@@ -71,9 +72,10 @@ async def chat_completion(model: Model, request: leapfrogai.ChatCompletionReques
                 ChatChoice(
                     index=0,
                     message=ChatMessage(
-                        role=response.choices[0].chat_item.role,
+                        role=ChatRole.Name(response.choices[0].chat_item.role).lower(),
                         content=response.choices[0].chat_item.content,
                     ),
+                    finish_reason="",
                 )
             ],
         )
