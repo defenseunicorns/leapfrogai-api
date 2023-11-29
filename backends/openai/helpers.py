@@ -63,16 +63,18 @@ async def recv_chat(
     yield "data: [DONE]\n\n"
 
 
-def grpc_chat_role(role: str) -> leapfrogai.ChatRole:
+def grpc_chat_role(role: str) -> leapfrogai.ChatRole | None:
     match role:
         case "user":
-            return leapfrogai.ChatRole.USER
+            return leapfrogai.ChatRole.USER  # type: ignore
         case "system":
-            return leapfrogai.ChatRole.SYSTEM
+            return leapfrogai.ChatRole.SYSTEM  # type: ignore
         case "function":
-            return leapfrogai.ChatRole.FUNCTION
+            return leapfrogai.ChatRole.FUNCTION  # type: ignore
         case "assistant":
-            return leapfrogai.ChatRole.ASSISTANT
+            return leapfrogai.ChatRole.ASSISTANT  # type: ignore
+        case _:
+            return None
 
 
 # read_chunks is a helper method that chunks the bytes of a file (audio file) into a iterator of AudioRequests
