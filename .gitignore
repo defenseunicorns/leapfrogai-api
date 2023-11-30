@@ -5,3 +5,4 @@ __pycache__
 config.yaml
 *.tar.zst
 .python-version
+.DS_Store
