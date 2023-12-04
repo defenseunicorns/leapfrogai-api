@@ -18,4 +18,4 @@ jobs:
 
       - run: make test
         env:
-          LFAI_RUN_DOCKER_TESTS: true
+          LFAI_RUN_REPEATER_TESTS: true
