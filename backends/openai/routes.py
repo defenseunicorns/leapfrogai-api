@@ -42,7 +42,7 @@ async def complete(
         )
 
     request = leapfrogai.CompletionRequest(
-        prompt=req.prompt,
+        prompt=req.prompt,  # type: ignore
         max_new_tokens=req.max_tokens,
         temperature=req.temperature,
     )
@@ -107,7 +107,7 @@ async def embeddings(
             detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",
         )
 
-    request = leapfrogai.EmbeddingRequest(inputs=[req.input])
+    request = leapfrogai.EmbeddingRequest(inputs=[req.input])  # type: ignore
     return await create_embeddings(model, request)
 
 

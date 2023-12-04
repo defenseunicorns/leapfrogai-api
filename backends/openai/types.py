@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from typing import Dict, Optional, Annotated
 from dataclasses import dataclass
+from typing import Annotated, Dict, Optional
 
+from fastapi import File, Form, UploadFile
 from pydantic import BaseModel
-from fastapi import File, UploadFile, Form
+
 
 ##########
 # GENERIC
@@ -39,7 +40,7 @@ class CompletionResponse(BaseModel):
     created: int = 0
     model: str = ""
     choices: list[CompletionChoice]
-    usage: Usage = None
+    usage: Usage | None = None
 
 
 ##########
@@ -135,6 +136,7 @@ class ModelResponse(BaseModel):
 # AUDIO
 ##########
 
+
 class CreateTranscriptionRequest(BaseModel):
     file: UploadFile
     model: str
@@ -161,6 +163,7 @@ class CreateTranscriptionRequest(BaseModel):
             response_format=response_format,
             temperature=temperature,
         )
+
 
 class CreateTranscriptionResponse(BaseModel):
     text: str
