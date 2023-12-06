@@ -1,4 +1,6 @@
-FROM ghcr.io/defenseunicorns/leapfrogai/python:3.11-dev-amd64 as builder
+ARG ARCH=amd64
+
+FROM ghcr.io/defenseunicorns/leapfrogai/python:3.11-dev-${ARCH} as builder
 
 WORKDIR /leapfrogai
 
@@ -6,7 +8,7 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt --user
 
-FROM ghcr.io/defenseunicorns/leapfrogai/python:3.11-amd64
+FROM ghcr.io/defenseunicorns/leapfrogai/python:3.11-${ARCH}
 
 WORKDIR /leapfrogai
 
