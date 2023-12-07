@@ -30,7 +30,7 @@ components:
     - name: leapfrogai
       namespace: leapfrogai
       localPath: chart
-      version: ###ZARF_PKG_TMPL_IMAGE_VERSION###
+      version: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
       valuesFiles:
         - "lfai-values.yaml"
     images:
