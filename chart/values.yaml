@@ -1,7 +1,7 @@
 domain: bigbang.dev
 
 image: 
-  lfaiAPITag: 0.1.2
+  lfaiAPITag: ###ZARF_CONST_LEAPFROGAI_API_VERSION###
   kiwigridTag: 1.23.3
 
 istio:
