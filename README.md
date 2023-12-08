@@ -10,12 +10,17 @@ See [instructions](#instructions) to get the API up and running. Then, go to htt
 
 ## Instructions
 
-Choose a LeapfrogAI model backend and get that running separately. Some examples of existing backends:
+The instructions in this section assume the following:
+
+1. You have properly installed and configured Python 3.11.x, to include its development tools
+2. You have chosen a LeapfrogAI model backend and have that running. Some examples of existing backends:
 
 - https://github.com/defenseunicorns/leapfrogai-backend-ctransformers
 - https://github.com/defenseunicorns/leapfrogai-backend-whisper
 
-#### Run Locally
+### Local Development
+
+For cloning a model locally and running the development backend.
 
 1. Create `config.yaml`, see `config-example.yaml` for common examples.
 
@@ -23,15 +28,19 @@ Choose a LeapfrogAI model backend and get that running separately. Some examples
 
 ```bash
 # Setup Python Virtual Environment
-python -m venv .venv
-source .venv/bin/activate
+make create-venv
+make activate-venv
 make requirements-dev
 
 # Start Model Backend
 make dev
 ```
 
-### Docker Run
+### Docker Container
+
+#### Image Build and Run
+
+For local image building and running.
 
 1. Create `config.yaml`, see `config-example.yaml` for common examples.
 
