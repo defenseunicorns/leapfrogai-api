@@ -12,8 +12,9 @@ See [instructions](#instructions) to get the API up and running. Then, go to htt
 
 The instructions in this section assume the following:
 
-1. You have properly installed and configured Python 3.11.x, to include its development tools
-2. You have chosen a LeapfrogAI model backend and have that running. Some examples of existing backends:
+1. Properly installed and configured Python 3.11.x, to include its development tools
+2. The `config.yaml` is created based on the `config-example.yaml`
+3. You have chosen a LeapfrogAI model backend and have that running. Some examples of existing backends:
 
 - https://github.com/defenseunicorns/leapfrogai-backend-ctransformers
 - https://github.com/defenseunicorns/leapfrogai-backend-whisper
@@ -21,10 +22,6 @@ The instructions in this section assume the following:
 ### Local Development
 
 For cloning a model locally and running the development backend.
-
-1. Create `config.yaml`, see `config-example.yaml` for common examples.
-
-2. Setup and run the API:
 
 ```bash
 # Setup Python Virtual Environment
@@ -41,10 +38,6 @@ make dev
 #### Image Build and Run
 
 For local image building and running.
-
-1. Create `config.yaml`, see `config-example.yaml` for common examples.
-
-2. Copy `config.yaml` into the container during the run command as a volume:
 
 ```bash
 # Build the docker image
