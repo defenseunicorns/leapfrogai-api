@@ -2,9 +2,9 @@
 
 kind: ZarfPackageConfig
 metadata:
-  name: leapfrogai-api
   description: "LeapfrogAI"
-  version: 0.4.4
+  name: leapfrogai-api
+  version: "###ZARF_PKG_TMPL_LEAPFROGAI_API_VERSION###"
   architecture: amd64
 
 constants:
@@ -30,7 +30,7 @@ components:
     - name: leapfrogai
       namespace: leapfrogai
       localPath: chart
-      version: 0.4.3
+      version: "###ZARF_PKG_TMPL_LEAPFROGAI_API_VERSION###"
       valuesFiles:
         - "lfai-values.yaml"
     images:
