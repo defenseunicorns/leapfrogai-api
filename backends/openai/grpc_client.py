@@ -31,7 +31,7 @@ async def stream_completion(model: Model, request: leapfrogai.CompletionRequest)
         )
 
 
-# TODO: CLean up completion() and stream_completion() to reduce code duplication
+# TODO: Clean up completion() and stream_completion() to reduce code duplication
 async def completion(model: Model, request: leapfrogai.CompletionRequest):
     async with grpc.aio.insecure_channel(model.backend) as channel:
         stub = leapfrogai.CompletionServiceStub(channel)
@@ -47,6 +47,7 @@ async def completion(model: Model, request: leapfrogai.CompletionRequest):
                     logprobs=None,
                 )
             ],
+            usage=Usage(total_tokens=0, prompt_tokens=0),
         )
 
 
@@ -61,7 +62,7 @@ async def stream_chat_completion(
         return StreamingResponse(recv_chat(stream), media_type="text/event-stream")
 
 
-# TODO: CLean up completion() and stream_completion() to reduce code duplication
+# TODO: Clean up completion() and stream_completion() to reduce code duplication
 async def chat_completion(model: Model, request: leapfrogai.ChatCompletionRequest):
     async with grpc.aio.insecure_channel(model.backend) as channel:
         stub = leapfrogai.ChatCompletionServiceStub(channel)
@@ -78,6 +79,7 @@ async def chat_completion(model: Model, request: leapfrogai.ChatCompletionReques
                     finish_reason="",
                 )
             ],
+            usage=Usage(total_tokens=0, prompt_tokens=0),
         )
 
 
