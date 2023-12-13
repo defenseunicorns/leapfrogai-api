@@ -77,7 +77,7 @@ class ChatCompletionRequest(BaseModel):
 class ChatChoice(BaseModel):
     index: int
     message: ChatMessage
-    finish_reason: str
+    finish_reason: str | None = ""
 
 
 class ChatStreamChoice(BaseModel):
@@ -140,10 +140,10 @@ class ModelResponse(BaseModel):
 class CreateTranscriptionRequest(BaseModel):
     file: UploadFile
     model: str
-    language: str
-    prompt: str
-    response_format: str
-    temperature: float
+    language: str = ""
+    prompt: str = ""
+    response_format: str = ""
+    temperature: float = 1
 
     @classmethod
     def as_form(

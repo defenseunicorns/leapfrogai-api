@@ -14,10 +14,13 @@ dependencies = [
 requires-python = "==3.11.6"
 
 [project.optional-dependencies]
-dev = ["pip-tools", "pytest", "black", "isort", "selenium"]
+dev = ["pip-tools", "pytest", "black", "isort", "httpx", "selenium"]
 
 [tool.pip-tools]
 generate-hashes = true
 
 [tool.setuptools.packages.find]
 exclude = ["chart"]
+
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib"]

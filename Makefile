@@ -10,7 +10,7 @@ requirements-dev:
 	python -m pip install -r requirements-dev.txt
 
 requirements:
-	pip-sync requirements.txt requirements-dev.txt
+	pip-sync requirements.txt
 
 build-requirements:
 	pip-compile -o requirements.txt pyproject.toml
@@ -18,8 +18,9 @@ build-requirements:
 build-requirements-dev:
 	pip-compile --extra dev -o requirements-dev.txt pyproject.toml --allow-unsafe
 
+.PHONY: test
 test:
-	pytest **/*.py
+	python -m pytest . -v
 
 dev:
 	uvicorn main:app --port 3000 --reload
@@ -29,3 +30,6 @@ docker-build:
 
 docker-push:
 	docker push ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:${VERSION}
+
+zarf-build:
+	zarf package create . --confirm --set LFAI_API_VERSION=${VERSION}

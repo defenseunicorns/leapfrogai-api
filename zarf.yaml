@@ -4,14 +4,14 @@ kind: ZarfPackageConfig
 metadata:
   description: "LeapfrogAI"
   name: leapfrogai-api
-  version: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
+  version: "###ZARF_PKG_TMPL_LEAPFROGAI_API_VERSION###"
   architecture: amd64
 
 constants:
   - name: LEAPFROGAI_API_VERSION
-    value: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
+    value: "###ZARF_PKG_TMPL_LEAPFROGAI_API_VERSION###"
   - name: KIWIGRID_VERSION
-    value: "1.23.3"
+    value: "###ZARF_PKG_TMPL_KIWIGRID_VERSION###"
 
 variables:
   - name: ISTIO_ENABLED
@@ -30,12 +30,12 @@ components:
     - name: leapfrogai
       namespace: leapfrogai
       localPath: chart
-      version: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
+      version: "###ZARF_PKG_TMPL_LEAPFROGAI_API_VERSION###"
       valuesFiles:
         - "lfai-values.yaml"
     images:
-      - "ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:###ZARF_PKG_TMPL_IMAGE_VERSION###"
-      - "registry1.dso.mil/ironbank/kiwigrid/k8s-sidecar:1.23.3"
+      - "ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:###ZARF_PKG_TMPL_LEAPFROGAI_API_VERSION###"
+      - "registry1.dso.mil/ironbank/kiwigrid/k8s-sidecar:###ZARF_PKG_TMPL_KIWIGRID_VERSION###"
   - name: metallb-config
     required: false
     description: "Creates metallb tenant ingresses for the cluster"
