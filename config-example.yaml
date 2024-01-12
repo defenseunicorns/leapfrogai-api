@@ -7,3 +7,9 @@ models:
   backend: localhost:50051
 - name: ctransformers
   backend: localhost:50051
+vector_stores:
+- weaviate
+- chromadb
+file_extensions:
+- pdf
+- txt

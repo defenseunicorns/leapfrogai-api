@@ -167,3 +167,68 @@ class CreateTranscriptionRequest(BaseModel):
 
 class CreateTranscriptionResponse(BaseModel):
     text: str
+
+##########
+# RAG/VECTORDB
+##########
+
+class PDFRequest(BaseModel):
+    url: str
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "url": "https://www.nde-ed.org/NDEEngineering/SafeDesign/MIL-STD-882E.pdf",
+                }                
+            ]
+        }
+    }
+
+
+class TextRequest(BaseModel):
+    url: str
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "url": "https://www.gutenberg.org/cache/epub/2199/pg2199.txt",
+                }
+            ]
+        }
+    }
+
+
+class Query(BaseModel):
+    prompt: str
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                # {
+                #     "prompt": "who is achilles?",
+                # },
+                {
+                    "prompt": "how can one mitigate and reduce risk?",
+                },                
+            ]
+        }
+    }
+
+
+class URLRequest(BaseModel):
+    # urls = ConfigDict(strict=False)
+    urls: list
+    extensions: list
+    url_base: str
+    limit: int
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "urls": ['https://read.84000.co/section/all-translated.html'],
+                    "extensions": ['pdf'],
+                    "url_base": "https://read.84000.co",
+                    "limit": 3,
+                },
+            ]
+        }
+    }
