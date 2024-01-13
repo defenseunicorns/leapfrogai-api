@@ -7,7 +7,7 @@ spec:
   gateways:
   - istio-system/{{ .Values.istio.gateway }}
   hosts:
-  - {{ .Values.domain }}
+  - "*"
   http:
    - match:
      - uri:
