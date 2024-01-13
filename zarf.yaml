@@ -20,8 +20,6 @@ variables:
     default: "leapfrogai"
   - name: ISTIO_INJECTION
     default: "disabled"
-  - name: DOMAIN
-    default: "*"
   - name: PREFIX
     description: Prefix for requests to the application
     default: ""
