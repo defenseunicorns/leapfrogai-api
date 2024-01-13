@@ -17,11 +17,11 @@ variables:
   - name: ISTIO_ENABLED
     default: "false"
   - name: ISTIO_GATEWAY
-    default: "tenant"
+    default: "leapfrogai"
   - name: ISTIO_INJECTION
     default: "disabled"
   - name: DOMAIN
-    default: "bigbang.dev"
+    default: "*"
   - name: PREFIX
     description: Prefix for requests to the application
     default: ""
