@@ -7,7 +7,7 @@ spec:
   gateways:
   - istio-system/{{ .Values.istio.gateway }}
   hosts:
-  - leapfrogai.{{ .Values.domain }}
+  - {{ .Values.domain }}
   http:
    - match:
      - uri:
