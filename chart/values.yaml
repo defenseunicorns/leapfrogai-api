@@ -1,4 +1,4 @@
-domain: *
+domain: "*"
 
 image: 
   lfaiAPITag: ###ZARF_CONST_LEAPFROGAI_API_VERSION###
