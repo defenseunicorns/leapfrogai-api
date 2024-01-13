@@ -9,10 +9,20 @@ spec:
   hosts:
   - leapfrogai.{{ .Values.domain }}
   http:
-  - route:
-    - destination:
+   - match:
+     - uri:
+         prefix: "###ZARF_VAR_PREFIX###/"
+     rewrite:
+       uri: "/"
+     route:
+     - destination:
         host: api
         port:
           number: 8080
+   - match:
+       - uri:
+           prefix: "###ZARF_VAR_PREFIX###"
+     redirect:
+       uri: "###ZARF_VAR_PREFIX###/"
 {{- end }}
 ---
