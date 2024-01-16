@@ -14,16 +14,15 @@ from llama_index.vector_stores import (
 from utils.logging import log, now, get_elapsed
 from utils import get_model_config
 
-VECTOR_STORES = get_model_config().get_rag_vector_stores
-
 
 class LLamaIndex:
 
     @staticmethod
-    def process_query(prompt, vdbs=VECTOR_STORES):
+    def process_query(prompt):
         start = now()
         vdbs_processed = []
         responses = []
+        vdbs = get_model_config().rag.vector_stores
         if 'weaviate' in vdbs:
             response = Weaviate.process_query(prompt)
             vdbs_processed.append('weaviate')
@@ -42,7 +41,7 @@ class LLamaIndex:
 
 
     @staticmethod
-    def vectorize_docs(docs, vdbs=VECTOR_STORES):
+    def vectorize_docs(docs, vdbs):
         log(f'vdbs: {vdbs}')
         vdbs_processed = []
         if 'weaviate' in vdbs:

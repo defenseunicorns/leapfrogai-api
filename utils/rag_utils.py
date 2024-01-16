@@ -23,8 +23,8 @@ from utils.logging import log, now, get_elapsed
 
 from fastapi import UploadFile
 
-VECTOR_STORES = get_model_config().get_rag_vector_stores
-FILE_EXTENSIONS = get_model_config().get_rag_file_extensions
+# VECTOR_STORES = get_model_config().rag.vector_stores
+# FILE_EXTENSIONS = get_model_config().rag.file_extensions
 
 
 def extract_text_from_pdf(pdf_path):
@@ -39,25 +39,26 @@ def get_filename(url):
     return url.split('/')[-1]
 
 
-def process_pdf(url, vdbs=VECTOR_STORES):
+def process_pdf(url):
     start = now()
     file = get_filename(url)
     log(f'processing file: {get_filename(url)}')
     r = requests.get(url)
     text = extract_text_from_pdf(BytesIO(r.content))
     docs = [Document(text=text)]
+    vdbs = get_model_config().rag.vector_stores
     vdbs_processed = LLamaIndex.vectorize_docs(docs, vdbs)
     elapsed = get_elapsed(start)
-    log(f'vdbs processed: {vdbs_processed}')
     return {'result': f'PDF {file} processed successfully', 'vdbs_processed': vdbs_processed, 'elapsed': elapsed}
 
 
-def process_text(url, vdbs=VECTOR_STORES):
+def process_text(url):
     start = now()
     file = get_filename(url)
     log(f'processing file: {get_filename(url)}')
     r = requests.get(url)
     docs = [Document(text=r.content)]
+    vdbs = get_model_config().rag.vector_stores
     vdbs_processed = LLamaIndex.vectorize_docs(docs, vdbs)
     elapsed = get_elapsed(start)
     return {'result': f'file {file} processed successfully', 'vdbs_processed': vdbs_processed, 'elapsed': elapsed}
@@ -70,8 +71,8 @@ def process_file(url, filetype):
         return process_text(url)
 
 
-def process_query(prompt, vdbs=VECTOR_STORES):
-    return LLamaIndex.process_query(prompt, vdbs)
+def process_query(prompt):
+    return LLamaIndex.process_query(prompt)
 
 
 def fetch_extension(url):
@@ -81,7 +82,7 @@ def fetch_extension(url):
         log(e)
 
 
-def process_files_from_urls(urls, vdbs=VECTOR_STORES):
+def process_files_from_urls(urls):
     start = now()
     filecount = len(urls)
     log(f'i will start processing {filecount} files')
@@ -90,7 +91,7 @@ def process_files_from_urls(urls, vdbs=VECTOR_STORES):
         extension = fetch_extension(url)
         r = requests.get(url)
 
-        if extension not in FILE_EXTENSIONS:
+        if extension not in get_model_config().rag.file_extensions:
             log(f'invalid extension: {extension}')                        
             text = None
         elif extension in ('pdf'):
@@ -102,6 +103,7 @@ def process_files_from_urls(urls, vdbs=VECTOR_STORES):
             docs.append(Document(text=text))
 
     if len(docs) > 0:
+        vdbs = get_model_config().rag.vector_stores
         vdbs_processed = LLamaIndex.vectorize_docs(docs, vdbs)   
         files_processed = len(docs)
     else:
@@ -111,7 +113,7 @@ def process_files_from_urls(urls, vdbs=VECTOR_STORES):
     elapsed = get_elapsed(start) 
     return {'files_processed': files_processed, 'vdbs_processed': vdbs_processed, 'elapsed': elapsed}
 
-def process_file_attachments(files: list[UploadFile], vdbs=VECTOR_STORES):
+def process_file_attachments(files: list[UploadFile]):
     start = now()
 
     docs = []
@@ -128,7 +130,8 @@ def process_file_attachments(files: list[UploadFile], vdbs=VECTOR_STORES):
             docs = []
 
         docs.append(Document(text=text))
-
+    
+    vdbs = get_model_config().rag.vector_stores
     vdbs_processed = LLamaIndex.vectorize_docs(docs, vdbs)   
     files_processed = len(docs)
     elapsed = get_elapsed(start) 
