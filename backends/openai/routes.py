@@ -2,11 +2,11 @@ from itertools import chain
 from typing import Annotated
 
 import leapfrogai
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, UploadFile
 
 from utils import get_model_config
 from utils.config import Config
-from .utils.rag_utils import (
+from utils.rag_utils import (
     process_file,
     process_query,
     process_files_by_extension_from_urls,
@@ -171,9 +171,9 @@ def put_files_by_extension_from_urls(payload: URLRequest):
 def process_prompt(q: Query):
     return process_query(q.prompt)
 
-@router.put("/config")
-def show_config():
-    return get_config()
+# @router.put("/config")
+# def show_config():
+#     return get_config()
 
 @router.post("/rag/uploadfiles/")
 async def create_upload_files(files: list[UploadFile]):

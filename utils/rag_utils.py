@@ -11,18 +11,20 @@ from llama_index import (
 
 from pypdf import PdfReader
 
-from ..vectordb.vector_stores import (
+from utils import get_model_config
+
+from vectordb.vector_stores import (
     ChromaDB,
     LLamaIndex,
     Weaviate,
 )
 
-from .logging import log, now, get_elapsed
+from utils.logging import log, now, get_elapsed
 
 from fastapi import UploadFile
 
-VECTOR_STORES = get_model_config()['vector_stores']
-FILE_EXTENSIONS = get_model_config()['file_extensions']
+VECTOR_STORES = get_model_config().get_rag_vector_stores
+FILE_EXTENSIONS = get_model_config().get_rag_file_extensions
 
 
 def extract_text_from_pdf(pdf_path):

@@ -10,8 +10,14 @@ dependencies = [
     "python-multipart >= 0.0.6",
     "toml >= 0.10.2",
     "watchfiles >= 0.21.0",
+    "bs4>=0.0.1",
+    "chromadb>=0.4.22",
+    "llama-index>=0.9.32",
+    "weaviate-client>=3.26.1",
+    "pypdf>=3.17.4",
+
 ]
-requires-python = "==3.11.6"
+requires-python = ">=3.11"
 
 [project.optional-dependencies]
 dev = ["pip-tools", "pytest", "black", "isort", "selenium"]

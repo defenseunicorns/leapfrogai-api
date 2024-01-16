@@ -18,6 +18,8 @@ COPY --from=builder /home/nonroot/.local/bin/uvicorn /home/nonroot/.local/bin/uv
 COPY main.py .
 COPY utils/ utils/
 COPY backends/ backends/
+COPY vectordb/ vectordb/
+COPY config.yaml config.yaml
 
 EXPOSE 8080
 

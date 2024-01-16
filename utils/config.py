@@ -93,6 +93,12 @@ class Config:
         else:
             return None
 
+    def get_rag_vector_stores(self):
+        return self.rag.vector_stores
+
+    def get_rag_file_extensions(self):
+        return self.rag.file_extensions
+
     def parse_models(self, loaded_artifact):
         for m in loaded_artifact["models"]:
             model_config = Model(name=m["name"], backend=m["backend"])
