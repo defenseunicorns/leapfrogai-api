@@ -17,9 +17,18 @@ class Model:
         self.name = name
         self.backend = backend
 
+class Rag:
+    vector_stores: List[str]
+    file_extensions: List[str]
+
+    def __init__(self, vector_stores: List[str], file_extensions: List[str]):
+        self.vector_stores = vector_stores
+        self.file_extensions = file_extensions
+
 
 class Config:
     models: dict[str, Model] = {}
+    rag: Rag = Rag(vector_stores=[], file_extensions=[])
 
     def __init__(self, models: dict[str, Model] = {}):
         self.models = models
@@ -104,3 +113,7 @@ class Config:
             model_config = Model(name=m["name"], backend=m["backend"])
 
             self.models[m["name"]] = model_config
+
+        if "rag" in loaded_artifact:
+            rag_config = Rag(vector_stores=loaded_artifact["rag"]["vector_stores"], file_extensions=loaded_artifact["rag"]["file_extensions"])
+            self.rag = rag_config
