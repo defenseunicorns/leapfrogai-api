@@ -13,7 +13,7 @@ requirements:
 	pip-sync requirements.txt requirements-dev.txt
 
 build-requirements:
-	pip-compile -o requirements.txt pyproject.toml
+	pip-compile -o requirements.txt pyproject.toml --allow-unsafe
 
 build-requirements-dev:
 	pip-compile --extra dev -o requirements-dev.txt pyproject.toml --allow-unsafe
