@@ -190,15 +190,12 @@ class FilesByURLRequest(BaseModel):
 
 
 class Query(BaseModel):
-    prompt: str
+    query: str
     model_config = {
         "json_schema_extra": {
             "examples": [
-                # {
-                #     "prompt": "who is achilles?",
-                # },
                 {
-                    "prompt": "how can one mitigate and reduce risk?",
+                    "query": "how can one mitigate and reduce risk?",
                 },                
             ]
         }

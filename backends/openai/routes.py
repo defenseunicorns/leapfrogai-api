@@ -153,20 +153,20 @@ async def transcribe(
 ##########
 
 @router.put("/rag/ingest/files/from/urls")
-def put_txt(payload: FilesByURLRequest):
+def ingest_files_from_urls(payload: FilesByURLRequest):
     return process_files_from_urls(payload.urls)
 
 @router.put("/rag/ingest/files/from/page_links")
-def put_files_by_extension_from_urls(payload: URLRequest):
+def ingest_files_from_links(payload: URLRequest):
     return process_files_by_extension_from_urls(payload)
 
 @router.post("/rag/ingest/files/from/form_attachments/")
-async def create_upload_files(files: list[UploadFile]):
+async def ingest_files_from_form_attachments(files: list[UploadFile]):
     return process_file_attachments(files)
 
 @router.put("/rag/query")
-def process_prompt(q: Query):
-    return process_query(q.prompt)
+def process_query(q: Query):
+    return process_query(q.query)
 
 # @router.put("/config")
 # def show_config():
