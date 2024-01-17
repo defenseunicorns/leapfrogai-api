@@ -172,32 +172,6 @@ class CreateTranscriptionResponse(BaseModel):
 # RAG/VECTORDB
 ##########
 
-class PDFRequest(BaseModel):
-    url: str
-    model_config = {
-        "json_schema_extra": {
-            "examples": [
-                {
-                    "url": "https://www.nde-ed.org/NDEEngineering/SafeDesign/MIL-STD-882E.pdf",
-                }                
-            ]
-        }
-    }
-
-
-class TextRequest(BaseModel):
-    url: str
-    model_config = {
-        "json_schema_extra": {
-            "examples": [
-                {
-                    "url": "https://www.gutenberg.org/cache/epub/2199/pg2199.txt",
-                }
-            ]
-        }
-    }
-
-
 class FilesByURLRequest(BaseModel):
     urls: list
     model_config = {
@@ -213,7 +187,6 @@ class FilesByURLRequest(BaseModel):
             ]
         }
     }
-
 
 
 class Query(BaseModel):

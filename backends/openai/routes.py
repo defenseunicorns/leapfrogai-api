@@ -33,8 +33,6 @@ from .types import (
     CreateTranscriptionResponse,
     ModelResponse,
     ModelResponseModel,
-    PDFRequest,
-    TextRequest,
     FilesByURLRequest,
     Query,
     URLRequest,    
@@ -153,15 +151,6 @@ async def transcribe(
 ##########
 # RAG/VECTORDB
 ##########
-
-@router.put("/rag/ingest/pdfs/from/urls")
-def put_pdf(payload: PDFRequest):
-    return process_file(payload.url, 'pdf')
-
-
-@router.put("/rag/ingest/textfiles/from/urls")
-def put_txt(payload: TextRequest):
-    return process_file(payload.url, 'txt')
 
 @router.put("/rag/ingest/files/from/urls")
 def put_txt(payload: FilesByURLRequest):
