@@ -29,3 +29,6 @@ docker-build:
 
 docker-push:
 	docker push ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:${VERSION}
+
+uvicorn_local:
+	python -m uvicorn main:app --host 0.0.0.0 --port 8080 --reload

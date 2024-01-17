@@ -11,6 +11,7 @@ from utils.rag_utils import (
     process_query,
     process_files_by_extension_from_urls,
     process_file_attachments,
+    process_files_from_urls,
 )
 
 from . import router
@@ -34,6 +35,7 @@ from .types import (
     ModelResponseModel,
     PDFRequest,
     TextRequest,
+    FilesByURLRequest,
     Query,
     URLRequest,    
 )
@@ -152,20 +154,26 @@ async def transcribe(
 # RAG/VECTORDB
 ##########
 
-@router.put("/rag/pdf_from_url")
+@router.put("/rag/ingest/pdfs/from/urls")
 def put_pdf(payload: PDFRequest):
     return process_file(payload.url, 'pdf')
 
 
-@router.put("/rag/textfile_from_url")
+@router.put("/rag/ingest/textfiles/from/urls")
 def put_txt(payload: TextRequest):
     return process_file(payload.url, 'txt')
 
+@router.put("/rag/ingest/files/from/urls")
+def put_txt(payload: FilesByURLRequest):
+    return process_files_from_urls(payload.urls)
 
-@router.put("/rag/load_files_from_page_links")
+@router.put("/rag/ingest/files/from/page_links")
 def put_files_by_extension_from_urls(payload: URLRequest):
     return process_files_by_extension_from_urls(payload)
 
+@router.post("/rag/ingest/files/from/form_attachments/")
+async def create_upload_files(files: list[UploadFile]):
+    return process_file_attachments(files)
 
 @router.put("/rag/query")
 def process_prompt(q: Query):
@@ -175,7 +183,5 @@ def process_prompt(q: Query):
 # def show_config():
 #     return get_config()
 
-@router.post("/rag/uploadfiles/")
-async def create_upload_files(files: list[UploadFile]):
-    return process_file_attachments(files)
+
 

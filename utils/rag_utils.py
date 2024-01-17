@@ -23,9 +23,6 @@ from utils.logging import log, now, get_elapsed
 
 from fastapi import UploadFile
 
-# VECTOR_STORES = get_model_config().rag.vector_stores
-# FILE_EXTENSIONS = get_model_config().rag.file_extensions
-
 
 def extract_text_from_pdf(pdf_path):
     reader = PdfReader(pdf_path)

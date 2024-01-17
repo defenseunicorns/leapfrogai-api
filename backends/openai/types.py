@@ -198,6 +198,24 @@ class TextRequest(BaseModel):
     }
 
 
+class FilesByURLRequest(BaseModel):
+    urls: list
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "urls": [
+                        "https://adlnet.gov/assets/uploads/webinars/DevSecOps%20and%20LTW%20Webinar%20Slides_Weiss-Smith-Udell.pdf",
+                        "https://dodcio.defense.gov/Portals/0/Documents/DoD%20Enterprise%20DevSecOps%20Reference%20Design%20v1.0_Public%20Release.pdf",
+                        "https://dodcio.defense.gov/Portals/0/Documents/Library/DoDEnterpriseDevSecOpsFundamentals.pdf",
+                    ]
+                }
+            ]
+        }
+    }
+
+
+
 class Query(BaseModel):
     prompt: str
     model_config = {
