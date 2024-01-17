@@ -2,17 +2,10 @@ from itertools import chain
 from typing import Annotated
 
 import leapfrogai
-from fastapi import Depends, HTTPException, UploadFile
+from fastapi import Depends, HTTPException
 
 from utils import get_model_config
 from utils.config import Config
-from utils.rag_utils import (
-    process_file,
-    process_query,
-    process_files_by_extension_from_urls,
-    process_file_attachments,
-    process_files_from_urls,
-)
 
 from . import router
 from .grpc_client import (
@@ -33,9 +26,6 @@ from .types import (
     CreateTranscriptionResponse,
     ModelResponse,
     ModelResponseModel,
-    FilesByURLRequest,
-    Query,
-    URLRequest,    
 )
 
 
@@ -147,30 +137,3 @@ async def transcribe(
     request_iterator = chain((audio_metadata_request,), chunk_iterator)
 
     return await create_transcription(model, request_iterator)
-
-##########
-# RAG/VECTORDB
-##########
-
-@router.put("/rag/ingest/files/from/urls")
-def ingest_files_from_urls(payload: FilesByURLRequest):
-    return process_files_from_urls(payload.urls)
-
-@router.put("/rag/ingest/files/from/page_links")
-def ingest_files_from_links(payload: URLRequest):
-    return process_files_by_extension_from_urls(payload)
-
-@router.post("/rag/ingest/files/from/form_attachments/")
-async def ingest_files_from_form_attachments(files: list[UploadFile]):
-    return process_file_attachments(files)
-
-@router.put("/rag/query")
-def process_query(q: Query):
-    return process_query(q.query)
-
-# @router.put("/config")
-# def show_config():
-#     return get_config()
-
-
-
