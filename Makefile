@@ -10,7 +10,7 @@ requirements-dev:
 	python -m pip install -r requirements-dev.txt
 
 requirements:
-	pip-sync requirements.txt requirements-dev.txt
+	pip-sync requirements.txt
 
 build-requirements:
 	pip-compile -o requirements.txt pyproject.toml --allow-unsafe
@@ -18,8 +18,9 @@ build-requirements:
 build-requirements-dev:
 	pip-compile --extra dev -o requirements-dev.txt pyproject.toml --allow-unsafe
 
+.PHONY: test
 test:
-	pytest **/*.py
+	python -m pytest . -v
 
 dev:
 	uvicorn main:app --port 3000 --reload
@@ -32,3 +33,6 @@ docker-push:
 
 uvicorn_local:
 	python -m uvicorn main:app --host 0.0.0.0 --port 8080 --reload
+
+zarf-build:
+	zarf package create . --confirm --set LFAI_API_VERSION=${VERSION}
