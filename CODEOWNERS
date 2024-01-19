@@ -1,0 +1,30 @@
+# Documentation and fallbacks for missed things
+* @defenseunicorns/leapfrogai
+*.md @defenseunicorns/leapfrogai 
+
+# Core Code
+/backends/ @gerred @YrrepNoj @gphorvath
+/tests/ @gerred @YrrepNoj @gphorvath
+/utils @gerred @YrrepNoj @gphorvath
+/main.py @gerred @YrrepNoj @gphorvath
+
+# Packaging
+/chart/ @gerred @YrrepNoj @gphorvath
+/metallb/ @gerred @YrrepNoj @gphorvath
+/zarf-config.yaml @gerred @YrrepNoj @gphorvath
+/zarf.yaml @gerred @YrrepNoj @gphorvath
+/lfai-values.yaml @gerred @YrrepNoj @gphorvath
+
+# Pipeline and Project Files
+/pyproject.toml
+/.github/ @gerred @YrrepNoj @gphorvath
+/.gitignore @gerred @YrrepNoj
+/Dockerfile @gerred @YrrepNoj
+/Makefile @gerred @YrrepNoj
+/requirements.txt @gerred @YrrepNoj
+/requirements-dev.txt @gerred @YrrepNoj
+/config-example.yaml @gerred @YrrepNoj
+
+# Additional privileged files
+/CODEOWNERS @jeff-mccoy @mikevanhemert @austenbryan
+/LICENSE @jeff-mccoy @austenbryan
