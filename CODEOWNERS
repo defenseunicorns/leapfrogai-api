@@ -26,5 +26,5 @@
 /config-example.yaml @gerred @YrrepNoj
 
 # Additional privileged files
-/CODEOWNERS @jeff-mccoy @mikevanhemert @austenbryan
-/LICENSE @jeff-mccoy @austenbryan
+/CODEOWNERS @jeff-mccoy @mikevanhemert @austenbryan @gerred
+/LICENSE @jeff-mccoy @austenbryan @gerred
