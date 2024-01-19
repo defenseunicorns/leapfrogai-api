@@ -16,8 +16,8 @@
 /lfai-values.yaml @gerred @YrrepNoj @gphorvath
 
 # Pipeline and Project Files
-/pyproject.toml
-/.github/ @gerred @YrrepNoj @gphorvath
+/pyproject.toml @gerred @YrrepNoj
+/.github/ @gerred @YrrepNoj
 /.gitignore @gerred @YrrepNoj
 /Dockerfile @gerred @YrrepNoj
 /Makefile @gerred @YrrepNoj
