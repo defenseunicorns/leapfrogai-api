@@ -1,6 +1,6 @@
 from backends.lfai.rag_utils import (
     process_file,
-    process_query,
+    process_query as do_query,
     process_files_by_extension_from_urls,
     process_file_attachments,
     process_files_from_urls,
@@ -34,4 +34,4 @@ async def ingest_files_from_form_attachments(files: list[UploadFile]):
 
 @router.put("/rag/query")
 def process_query(q: Query):
-    return process_query(q.query)
+    return do_query(q.query)
