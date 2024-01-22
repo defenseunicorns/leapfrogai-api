@@ -19,6 +19,7 @@ COPY main.py .
 COPY utils/ utils/
 COPY backends/ backends/
 COPY vectordb/ vectordb/
+COPY config.yaml config.yaml
 
 EXPOSE 8080
 
