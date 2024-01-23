@@ -5,6 +5,17 @@ import weaviate
 from llama_index import (
     VectorStoreIndex,
     StorageContext,
+    ServiceContext,    
+    set_global_service_context,        
+)
+from llama_index.llms import (
+    OpenAI,
+    LlamaCPP,
+    HuggingFaceLLM
+)
+from llama_index.embeddings import (
+    HuggingFaceEmbedding,
+    OpenAIEmbedding
 )
 from llama_index.vector_stores import (
     WeaviateVectorStore,
@@ -15,10 +26,60 @@ from utils.logging import log, now, get_elapsed
 from utils import get_model_config
 
 
+# llm = HuggingFaceLLM(model_name="StabilityAI/stablelm-tuned-alpha-3b")
+# llm = HuggingFaceLLM(model_name="microsoft/phi-2")
+# embed_model = HuggingFaceEmbedding()
+# embed_model = OpenAIEmbedding(model_name='text-embedding-ada-002')
+# llm = HuggingFaceLLM(model_name="BAAI/bge-base-en-v1.5")
+# embed_model = HuggingFaceEmbedding(model_name='BAAI/bge-base-en-v1.5')
+# llm = HuggingFaceLLM(model_name="sentence-transformers/all-MiniLM-L12-v2")
+# embed_model = HuggingFaceEmbedding(model_name='BAAI/bge-base-en-v1.5')
+# log(f'llm: {str(llm)}')
+# log(f'embed_model: {str(embed_model)}')
+
+# service_context = ServiceContext.from_defaults(llm=None, embed_model=embed_model)
+# service_context = ServiceContext.from_defaults(llm=llm, embed_model=embed_model)
+# log(f'service_context: {service_context}')
+# servicecontext_dict = {
+#     'llm': service_context.llm,
+#     'embed_model': service_context.embed_model
+# }
+# log(f'llm: {str(service_context.llm)}')
+# log(f'embed_model: {str(service_context.embed_model)}')
+# log(servicecontext_dict)
+# set_global_service_context(service_context)
+
+# llm = HuggingFaceLLM(model_name="BAAI/bge-small-en-v1.5")
+
+def set_rag_context():
+    rag_llm = get_model_config().rag.llm
+    rag_embed_model = get_model_config().get_rag_embed_model()
+
+    if rag_llm.hub == "huggingface":
+        llm = HuggingFaceLLM(
+            context_window=2048,
+            max_new_tokens=256,
+            generate_kwargs={"temperature": 0.1, "do_sample": False},
+            # system_prompt=system_prompt,
+            # query_wrapper_prompt=query_wrapper_prompt,
+            tokenizer_name=rag_llm.model,
+            model_name=rag_llm.model,
+            # device_map="cuda",
+            # uncomment this if using CUDA to reduce memory usage
+            # model_kwargs={"torch_dtype": torch.bfloat16}
+        )
+
+    if rag_embed_model.hub == "huggingface":
+        embed_model = HuggingFaceEmbedding(model_name=rag_embed_model.model)
+
+    service_context = ServiceContext.from_defaults(llm=llm, embed_model=embed_model)
+    set_global_service_context(service_context)
+
 class LLamaIndex:
 
     @staticmethod
     def process_query(prompt):
+        set_rag_context()
         start = now()
         vdbs_processed = []
         responses = []
@@ -42,6 +103,7 @@ class LLamaIndex:
 
     @staticmethod
     def vectorize_docs(docs, vdbs):
+        set_rag_context()
         log(f'vdbs: {vdbs}')
         vdbs_processed = []
         if 'weaviate' in vdbs:
@@ -75,6 +137,16 @@ class BaseVectorStore(abc.ABC):
         query_engine = index.as_query_engine()
         response = query_engine.query(query).response
         return response
+
+    @staticmethod
+    def get_service_context():
+        service_context = ServiceContext.from_defaults()
+        # servicecontext_dict = {
+        #     'llm': service_context.llm,
+        #     'embed_model': service_context.embed_model
+        # }
+        # log(servicecontext_dict)
+        log(f'service_context: {service_context}')
 
     @staticmethod
     @abc.abstractmethod
@@ -125,6 +197,7 @@ class Weaviate(BaseVectorStore):
 
     @staticmethod
     def vectorize_docs(docs, index_name=None):
+        # BaseVectorStore.get_service_context()        
         index_name = Weaviate.LFAI_INDEX_NAME if index_name is None else index_name
         storage_context = Weaviate.get_storage_context(index_name)
         index = Weaviate.index_from_docs(docs, storage_context)
@@ -164,6 +237,7 @@ class ChromaDB(BaseVectorStore):
 
     @staticmethod
     def vectorize_docs(docs, index_name=None):
+        # BaseVectorStore.get_service_context()        
         index_name = ChromaDB.LFAI_INDEX_NAME if index_name is None else index_name        
         storage_context = ChromaDB.get_storage_context(index_name)
         index = ChromaDB.index_from_docs(docs, storage_context)
@@ -172,6 +246,7 @@ class ChromaDB(BaseVectorStore):
 
     def process_query(prompt):
         start = now()
+        BaseVectorStore.get_service_context()        
         vector_store = ChromaDB.get_vector_store(Weaviate.LFAI_INDEX_NAME)
         index = ChromaDB.index_from_vector_store(vector_store)
         response = ChromaDB.query_index(index, prompt)

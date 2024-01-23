@@ -14,3 +14,9 @@ rag:
   file_extensions:
     - pdf
     - txt
+  llm:
+    hub: huggingface
+    model: "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+  embed_model:
+    hub: huggingface
+    model: "BAAI/bge-small-en-v1.5"

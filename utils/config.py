@@ -17,18 +17,30 @@ class Model:
         self.name = name
         self.backend = backend
 
+class RagModel:
+    hub: str
+    model: str
+
+    def __init__(self, hub: str, model: str):
+        self.hub = hub
+        self.model = model
+
 class Rag:
     vector_stores: List[str]
     file_extensions: List[str]
+    llm: RagModel
+    embed_model: RagModel
 
-    def __init__(self, vector_stores: List[str], file_extensions: List[str]):
+    def __init__(self, vector_stores: List[str], file_extensions: List[str], llm: RagModel,  embed_model: RagModel):
         self.vector_stores = vector_stores
         self.file_extensions = file_extensions
+        self.llm = llm
+        self.embed_model = embed_model
 
 
 class Config:
     models: dict[str, Model] = {}
-    rag: Rag = Rag(vector_stores=[], file_extensions=[])
+    rag: Rag = Rag(vector_stores=[], file_extensions=[], llm={}, embed_model={})
 
     def __init__(self, models: dict[str, Model] = {}):
         self.models = models
@@ -108,6 +120,12 @@ class Config:
     def get_rag_file_extensions(self):
         return self.rag.file_extensions
 
+    def get_rag_llm(self):
+        return self.rag.llm
+
+    def get_rag_embed_model(self):
+        return self.rag.embed_model        
+
     def parse_models(self, loaded_artifact):
         for m in loaded_artifact["models"]:
             model_config = Model(name=m["name"], backend=m["backend"])
@@ -115,5 +133,9 @@ class Config:
             self.models[m["name"]] = model_config
 
         if "rag" in loaded_artifact:
-            rag_config = Rag(vector_stores=loaded_artifact["rag"]["vector_stores"], file_extensions=loaded_artifact["rag"]["file_extensions"])
+            llm = RagModel(hub=loaded_artifact["rag"]["llm"]["hub"], model=loaded_artifact["rag"]["llm"]["model"])
+            print(f'hub: {llm.hub}, model: {llm.model}')
+            embed_model = RagModel(hub=loaded_artifact["rag"]["embed_model"]["hub"], model=loaded_artifact["rag"]["embed_model"]["model"])
+            print(f'hub: {embed_model.hub}, model: {embed_model.model}')
+            rag_config = Rag(vector_stores=loaded_artifact["rag"]["vector_stores"], file_extensions=loaded_artifact["rag"]["file_extensions"], llm=llm, embed_model=embed_model)
             self.rag = rag_config
