@@ -157,9 +157,7 @@ bcrypt==4.1.2 \
 beautifulsoup4==4.12.3 \
     --hash=sha256:74e3d1928edc070d21748185c46e3fb33490f22f52a3addee9aee0f4f7781051 \
     --hash=sha256:b80878c9f40111313e55da8ba20bdba06d8fa3969fc68304167741bbf9e082ed
-    # via
-    #   bs4
-    #   llama-index
+    # via bs4
 bs4==0.0.1 \
     --hash=sha256:36ecea1fd7cc5c0c6e4a1ff075df26d50da647b75376626cc186e2212886dd3a
     # via leapfrogai-api (pyproject.toml)
@@ -752,9 +750,9 @@ leapfrogai==0.3.3 \
     --hash=sha256:118272c4f6a7ea1e321bae7d80f1bde7c3089cce06ba79e4b88e87b5d17e5b8e \
     --hash=sha256:7f9fabfa4d1b3be2b14fcbde3ce5a0c5c2a1f92b656c1531e6d26d4ac063f394
     # via leapfrogai-api (pyproject.toml)
-llama-index==0.9.32 \
-    --hash=sha256:8ba179259ea6589f9e085a0acaf27236858bb7307825e203c192ffeeb8452574 \
-    --hash=sha256:ca3122d78169fe700a47a77f0a0d6b7ddeb2532f7f44c66899cbf05818bb59b0
+llama-index==0.9.36 \
+    --hash=sha256:1d538876e52b391326c787d4e65932821c3138e2f686766714af86cbe69dc7e7 \
+    --hash=sha256:c0470875fdb63809e2e94eb90f5ac82a07af5cd1df43d73574986269c791bb34
     # via leapfrogai-api (pyproject.toml)
 markupsafe==2.1.4 \
     --hash=sha256:0042d6a9880b38e1dd9ff83146cc3c9c18a059b9360ceae207805567aacccc69 \

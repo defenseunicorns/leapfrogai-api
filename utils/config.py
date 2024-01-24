@@ -124,7 +124,7 @@ class Config:
         return self.rag.llm
 
     def get_rag_embed_model(self):
-        return self.rag.embed_model        
+        return self.rag.embed_model
 
     def parse_models(self, loaded_artifact):
         for m in loaded_artifact["models"]:
@@ -133,9 +133,16 @@ class Config:
             self.models[m["name"]] = model_config
 
         if "rag" in loaded_artifact:
-            llm = RagModel(hub=loaded_artifact["rag"]["llm"]["hub"], model=loaded_artifact["rag"]["llm"]["model"])
-            print(f'hub: {llm.hub}, model: {llm.model}')
-            embed_model = RagModel(hub=loaded_artifact["rag"]["embed_model"]["hub"], model=loaded_artifact["rag"]["embed_model"]["model"])
-            print(f'hub: {embed_model.hub}, model: {embed_model.model}')
+
+            if "llm" in loaded_artifact["rag"]:
+                llm = RagModel(hub=loaded_artifact["rag"]["llm"]["hub"], model=loaded_artifact["rag"]["llm"]["model"])
+            else:
+                llm = RagModel(hub='none', model='none')
+
+            if "embed_model" in loaded_artifact["rag"]:
+                embed_model = RagModel(hub=loaded_artifact["rag"]["embed_model"]["hub"], model=loaded_artifact["rag"]["embed_model"]["model"])
+            else:
+                embed_model = RagModel(hub='none', model='none')
+
             rag_config = Rag(vector_stores=loaded_artifact["rag"]["vector_stores"], file_extensions=loaded_artifact["rag"]["file_extensions"], llm=llm, embed_model=embed_model)
             self.rag = rag_config

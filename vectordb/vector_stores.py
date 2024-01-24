@@ -36,6 +36,7 @@ def set_rag_context():
         llm_model_key = "model"
     else:
         llm = None
+        llm_model_key = "class_name"
 
     if rag_embed_model.hub == "huggingface":
         embed_model = HuggingFaceEmbedding(model_name=rag_embed_model.model)
@@ -46,21 +47,18 @@ def set_rag_context():
 
     service_context = ServiceContext.from_defaults(llm=llm, embed_model=embed_model)
 
-    # if llm is not None and embed_model is not None:        
-    #     service_context = ServiceContext.from_defaults(llm=llm, embed_model=embed_model)
-    # else:
-    #     service_context = ServiceContext.from_defaults()
-
     set_global_service_context(service_context)
 
     service_context_dict = service_context.to_dict()
+
+    # DEBUG:
+    # log(f'service context: {service_context_dict}')
 
     llm_desc = f'{service_context_dict["llm"].get("class_name")}:{service_context_dict["llm"].get(llm_model_key)}'
     embedding_desc = f'{service_context_dict["embed_model"].get("class_name")}:{service_context_dict["embed_model"].get("model_name")}'
 
     log(f'llm: {llm_desc}')
     log(f'embed_model: {embedding_desc}')
-    log(f'service context: {service_context_dict}')
 
 class LLamaIndex:
 
