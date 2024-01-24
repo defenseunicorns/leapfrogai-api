@@ -68,9 +68,24 @@ def set_rag_context():
             # uncomment this if using CUDA to reduce memory usage
             # model_kwargs={"torch_dtype": torch.bfloat16}
         )
+    elif rag_llm.hub == "openai":
+        llm = OpenAI(
+            context_window=2048,
+            max_new_tokens=256,
+            generate_kwargs={"temperature": 0.1, "do_sample": False},
+            # system_prompt=system_prompt,
+            # query_wrapper_prompt=query_wrapper_prompt,
+            tokenizer_name=rag_llm.model,
+            model_name=rag_llm.model,
+            # device_map="cuda",
+            # uncomment this if using CUDA to reduce memory usage
+            # model_kwargs={"torch_dtype": torch.bfloat16}
+        )        
 
     if rag_embed_model.hub == "huggingface":
         embed_model = HuggingFaceEmbedding(model_name=rag_embed_model.model)
+    elif rag_embed_model.hub == "openai":
+        embed_model = OpenAIEmbedding(model_name=rag_embed_model.model)
 
     service_context = ServiceContext.from_defaults(llm=llm, embed_model=embed_model)
     set_global_service_context(service_context)
