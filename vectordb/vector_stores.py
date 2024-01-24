@@ -30,8 +30,10 @@ def set_rag_context():
 
     if rag_llm.hub == "huggingface":
         llm = HuggingFaceLLM(tokenizer_name=rag_llm.model,model_name=rag_llm.model)
+        llm_model_key = "model_name"
     elif rag_llm.hub == "openai":
         llm = OpenAI(tokenizer_name=rag_llm.model, model_name=rag_llm.model)
+        llm_model_key = "model"
     else:
         llm = None
 
@@ -40,20 +42,21 @@ def set_rag_context():
     elif rag_embed_model.hub == "openai":
         embed_model = OpenAIEmbedding(model_name=rag_embed_model.model)
     else:
-        embed_model = None
+        embed_model = 'local'
 
+    service_context = ServiceContext.from_defaults(llm=llm, embed_model=embed_model)
 
-    if llm is not None and embed_model is not None:        
-        service_context = ServiceContext.from_defaults(llm=llm, embed_model=embed_model)
-    else:
-        service_context = ServiceContext.from_defaults()
+    # if llm is not None and embed_model is not None:        
+    #     service_context = ServiceContext.from_defaults(llm=llm, embed_model=embed_model)
+    # else:
+    #     service_context = ServiceContext.from_defaults()
 
     set_global_service_context(service_context)
 
     service_context_dict = service_context.to_dict()
 
-    llm_desc = f'{service_context_dict["llm"]["class_name"]}:{service_context_dict["llm"]["model_name"]}'
-    embedding_desc = f'{service_context_dict["embed_model"]["class_name"]}:{service_context_dict["embed_model"]["model_name"]}'
+    llm_desc = f'{service_context_dict["llm"].get("class_name")}:{service_context_dict["llm"].get(llm_model_key)}'
+    embedding_desc = f'{service_context_dict["embed_model"].get("class_name")}:{service_context_dict["embed_model"].get("model_name")}'
 
     log(f'llm: {llm_desc}')
     log(f'embed_model: {embedding_desc}')
