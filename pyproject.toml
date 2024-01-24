@@ -16,7 +16,7 @@ dependencies = [
     "weaviate-client>=3.26.1",
     "pypdf>=3.17.4",
     "setuptools>=68.2.2",
-    "transformers>=4.36.2",
+    "transformers>=4.37.0",
     "torch>=2.1.2",    
     "accelerate>=0.26.1",
 ]
