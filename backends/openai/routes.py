@@ -85,7 +85,7 @@ async def chat_complete(
 
 @router.get("/models")
 async def models(
-    model_config: Annotated[Config, Depends(get_model_config)]
+    model_config: Annotated[Config, Depends(get_model_config)],
 ) -> ModelResponse:
     res = ModelResponse()
     for model in model_config.models:

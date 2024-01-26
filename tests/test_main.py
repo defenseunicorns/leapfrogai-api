@@ -1,10 +1,12 @@
-from fastapi.testclient import TestClient
-from main import app
-import backends.openai.types as lfai_types
 import json
 import os
-import pytest
 import time
+
+import pytest
+from fastapi.testclient import TestClient
+
+import backends.openai.types as lfai_types
+from main import app
 
 os.environ["LFAI_CONFIG_FILENAME"] = "test-config.yaml"
 os.environ["LFAI_CONFIG_PATH"] = os.path.join(os.path.dirname(__file__), "fixtures")
