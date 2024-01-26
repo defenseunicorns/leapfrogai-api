@@ -1,6 +1,4 @@
 import requests
-import sys
-import yaml
 from bs4 import BeautifulSoup
 from io import BytesIO
 from llama_index import (
