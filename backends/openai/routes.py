@@ -35,7 +35,7 @@ async def complete(
 ):
     # Get the model backend configuration
     model = model_config.get_model_backend(req.model)
-    if model == None:
+    if model is None:
         raise HTTPException(
             status_code=405,
             detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",
@@ -60,7 +60,7 @@ async def chat_complete(
 ):
     # Get the model backend configuration
     model = model_config.get_model_backend(req.model)
-    if model == None:
+    if model is None:
         raise HTTPException(
             status_code=405,
             detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",
@@ -101,7 +101,7 @@ async def embeddings(
 ) -> CreateEmbeddingResponse:
     # Get the model backend configuration
     model = model_config.get_model_backend(req.model)
-    if model == None:
+    if model is None:
         raise HTTPException(
             status_code=405,
             detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",
@@ -126,7 +126,7 @@ async def transcribe(
 ) -> CreateTranscriptionResponse:
     # Get the model backend configuration
     model = model_config.get_model_backend(req.model)
-    if model == None:
+    if model is None:
         raise HTTPException(
             status_code=405,
             detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",
