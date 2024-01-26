@@ -12,9 +12,7 @@ from pypdf import PdfReader
 from utils import get_model_config
 
 from vectordb.vector_stores import (
-    ChromaDB,
     LLamaIndex,
-    Weaviate,
 )
 
 from utils.logging import log, now, get_elapsed
