@@ -24,8 +24,8 @@ jobs:
       uses: docker/login-action@v3
       with:
         registry: registry1.dso.mil
-        username: ${{ secrets.REGISTRY1_USERNAME }}
-        password: ${{ secrets.REGISTRY1_PASSWORD }}
+        username: ${{ secrets.IRON_BANK_ROBOT_USERNAME }}
+        password: ${{ secrets.IRON_BANK_ROBOT_PASSWORD }}
 
     - name: Build API Image
       run: make docker-build docker-push VERSION=$GITHUB_REF_NAME
