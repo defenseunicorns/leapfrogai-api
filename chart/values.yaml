@@ -1,13 +1,8 @@
 domain: bigbang.dev
 
 image: 
-  lfaiAPITag: ###ZARF_CONST_LEAPFROGAI_API_VERSION###
+  lfaiAPITag: v0.4.6 
   kiwigridTag: 1.23.3
-
-istio:
-  enabled: false
-  gateway: tenant
-  injection: disabled
 
 api:
   replicas: 1
