@@ -1,6 +1,6 @@
 package:
   create: 
     set:
-      leapfrogai_api_version: v0.4.6
+      leapfrogai_api_version: dev
       kiwigrid_version: 1.23.3
     max_package_size: "1000000000"

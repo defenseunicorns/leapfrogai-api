@@ -9,7 +9,7 @@ spec:
       - service: api 
         podLabels:
           app: api
-        host: leapfrogai 
+        host: leapfrogai-api
         gateway: tenant 
         port: 8080
 
