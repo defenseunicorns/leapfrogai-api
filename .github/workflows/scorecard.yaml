@@ -3,7 +3,8 @@ on:
   # Only the default branch is supported.
   branch_protection_rule:
   schedule:
-    - cron: '20 3 * * 7' # Every Sunday at 03:20 UTC
+    - cron: '20 3 * * 0' # Every Sunday at 03:20 UTC
+
   push:
     branches: [ "main" ]
 
