@@ -107,10 +107,10 @@ async def embeddings(
             detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",
         )
 
-    if req.input is str:
-        request = leapfrogai.EmbeddingRequest(inputs=[req.input])
-    elif req.input is list[str]:
+    if type(req.input) is list:
         request = leapfrogai.EmbeddingRequest(inputs=req.input)
+    elif type(req.input) is str:
+        request = leapfrogai.EmbeddingRequest(inputs=[req.input])
     else:
         raise HTTPException(
             status_code=405,
