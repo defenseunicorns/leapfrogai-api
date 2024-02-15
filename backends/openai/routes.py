@@ -109,7 +109,7 @@ async def embeddings(
 
     if type(req.input) is str:
         request = leapfrogai.EmbeddingRequest(inputs=[req.input])
-    elif all(isinstance(i, str) for i in req.input):
+    elif type(req.input) is list and all(isinstance(i, str) for i in req.input):
         request = leapfrogai.EmbeddingRequest(inputs=req.input)
     else:
         raise HTTPException(
