@@ -107,9 +107,17 @@ async def embeddings(
             detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",
         )
 
-    request = leapfrogai.EmbeddingRequest(inputs=[req.input])  # type: ignore
+    if type(req.input) is str:
+        request = leapfrogai.EmbeddingRequest(inputs=[req.input])
+    elif type(req.input) is list and all(isinstance(i, str) for i in req.input):
+        request = leapfrogai.EmbeddingRequest(inputs=req.input)
+    else:
+        raise HTTPException(
+            status_code=405,
+            detail=f"Invalid input type {type(req.input)}. Currently supported types are str and list[str]"
+        )
+        
     return await create_embeddings(model, request)
-
 
 @router.post("/audio/transcriptions")
 async def transcribe(
