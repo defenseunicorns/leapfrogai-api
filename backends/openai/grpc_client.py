@@ -90,8 +90,8 @@ async def create_embeddings(model: Model, request: leapfrogai.EmbeddingRequest):
         return CreateEmbeddingResponse(
             data=[
                 EmbeddingResponseData(
-                    embedding=list(e.embeddings[0].embedding), index=0
-                )
+                    embedding=list(e.embeddings[i].embedding), index=i
+                ) for i in range(len(e.embeddings))
             ],
             model=model.name,
             usage=Usage(prompt_tokens=0, total_tokens=0),
