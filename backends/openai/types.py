@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Annotated, Dict, Optional
+from typing import Dict, Optional
 
 from fastapi import File, Form, UploadFile
 from pydantic import BaseModel
@@ -102,7 +101,7 @@ class ChatCompletionResponse(BaseModel):
 
 class CreateEmbeddingRequest(BaseModel):
     model: str
-    input: str | list[str]
+    input: str | list[str] | list[int] | list[list[int]]
     user: str | None = None
 
 

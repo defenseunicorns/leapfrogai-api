@@ -24,8 +24,8 @@ jobs:
       uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
       with:
         registry: registry1.dso.mil
-        username: ${{ secrets.REGISTRY1_USERNAME }}
-        password: ${{ secrets.REGISTRY1_PASSWORD }}
+        username: ${{ secrets.IRON_BANK_ROBOT_USERNAME }}
+        password: ${{ secrets.IRON_BANK_ROBOT_PASSWORD }}
 
     - name: Build API Image
       run: make docker-build docker-push VERSION=$GITHUB_REF_NAME
@@ -34,7 +34,7 @@ jobs:
       uses: defenseunicorns/setup-zarf@f95763914e20e493bb5d45d63e30e17138f981d6 # v1.0.0
 
     - name: Build Zarf Package
-      run: zarf package create . --confirm
+      run: zarf package create . --set=LEAPFROGAI_API_VERSION=$GITHUB_REF_NAME --confirm
 
     - name: Publish Zarf Package
       run: zarf package publish zarf-package-*.zst oci://ghcr.io/defenseunicorns/packages
