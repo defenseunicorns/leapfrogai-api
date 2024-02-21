@@ -6,7 +6,7 @@ from typing import List
 
 import toml
 import yaml
-from watchfiles import awatch
+from watchfiles import Change, awatch
 
 
 class Model:
@@ -42,18 +42,36 @@ class Config:
         # Watch the directory for changes until the end of time
         while True:
             async for changes in awatch(directory, recursive=False, step=150):
-                # get a unique list of files that have been updated
+                # get two unique lists of files that have been (updated files and deleted files)
                 # (awatch can return duplicates depending on the type of updates that happen)
-                unique_files = set()
+                unique_new_files = set()
+                unique_deleted_files = set()
+                print("total incoming changes: ", changes)
                 for change in changes:
-                    unique_files.add(os.path.basename(change[1]))
+                    print("type of change detected: {}".format(change[0]))
+                    if change[0] == Change.deleted: 
+                        unique_deleted_files.add(os.path.basename(change[1]))
+                    else:
+                        unique_new_files.add(os.path.basename(change[1]))
+                    
+
+                print("unique new files identified: ", unique_new_files)
+                print("unique deleted files identified: ", unique_deleted_files)
 
                 # filter the files to those that match the filename or glob pattern
-                filtered_matches = fnmatch.filter(unique_files, filename)
+                filtered_new_matches = fnmatch.filter(unique_new_files, filename)
+                filtered_deleted_matches = fnmatch.filter(unique_deleted_files, filename)
+                
+                print("new matches to the filename ({}) in question: ".format(filename), filtered_new_matches)
+                print("deleted matches to the filename ({}) in question: ".format(filename), filtered_deleted_matches)
 
                 # load all the updated config files
-                for match in filtered_matches:
+                for match in filtered_new_matches:
                     self.load_config_file(os.path.join(directory, match))
+
+                # remove deleted configs
+                for match in filtered_deleted_matches:
+                    pass #TODO: write this function
 
     def load_config_file(self, config_path: str):
         # load the config file into the config object
@@ -71,6 +89,8 @@ class Config:
 
             # parse the object into our config
             self.parse_models(loaded_artifact)
+
+        print("loaded artifact at {}".format(config_path))
 
         return
 
