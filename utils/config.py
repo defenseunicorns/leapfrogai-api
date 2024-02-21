@@ -73,7 +73,7 @@ class Config:
 
                 # remove deleted models
                 for match in filtered_deleted_matches:
-                    self.delete_by_config(os.path.join(directory, match))
+                    self.remove_model_by_config(os.path.join(directory, match))
 
     def load_config_file(self, config_path: str):
         # load the config file into the config object
@@ -120,11 +120,14 @@ class Config:
             model_config = Model(name=m["name"], backend=m["backend"])
 
             self.models[m["name"]] = model_config
-            self.config_sources[config_path].append(m["name"])
+            try:
+                self.config_sources[config_path].append(m["name"])
+            except KeyError:
+                self.config_sources[config_path] = [m["name"]]
 
     def remove_model_by_config(self, config_path):
         for model_name in self.config_sources[config_path]:
-            self.model.pop(model_name)
+            self.models.pop(model_name)
             print("removed {} from Model Config".format(model_name))
         
         # clear config once all corresponding models are deleted
