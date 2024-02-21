@@ -20,9 +20,11 @@ class Model:
 
 class Config:
     models: dict[str, Model] = {}
+    config_sources: dict[str, list] = {}
 
-    def __init__(self, models: dict[str, Model] = {}):
+    def __init__(self, models: dict[str, Model] = {}, config_sources: dict[str, list] = {}):
         self.models = models
+        self.config_sources = config_sources
 
     def __str__(self):
         return f"Models: {self.models}"
@@ -69,9 +71,9 @@ class Config:
                 for match in filtered_new_matches:
                     self.load_config_file(os.path.join(directory, match))
 
-                # remove deleted configs
+                # remove deleted models
                 for match in filtered_deleted_matches:
-                    pass #TODO: write this function
+                    self.delete_by_config(os.path.join(directory, match))
 
     def load_config_file(self, config_path: str):
         # load the config file into the config object
@@ -88,7 +90,7 @@ class Config:
                 return
 
             # parse the object into our config
-            self.parse_models(loaded_artifact)
+            self.parse_models(loaded_artifact, config_path)
 
         print("loaded artifact at {}".format(config_path))
 
@@ -113,8 +115,17 @@ class Config:
         else:
             return None
 
-    def parse_models(self, loaded_artifact):
+    def parse_models(self, loaded_artifact, config_path):
         for m in loaded_artifact["models"]:
             model_config = Model(name=m["name"], backend=m["backend"])
 
             self.models[m["name"]] = model_config
+            self.config_sources[config_path].append(m["name"])
+
+    def remove_model_by_config(self, config_path):
+        for model_name in self.config_sources[config_path]:
+            self.model.pop(model_name)
+            print("removed {} from Model Config".format(model_name))
+        
+        # clear config once all corresponding models are deleted
+        self.config_sources.pop(config_path)
