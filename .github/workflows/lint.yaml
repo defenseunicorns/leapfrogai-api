@@ -18,3 +18,13 @@ jobs:
         with:
           version: 0.2.2
           args: format --check
+
+      # Install python so we can validate the requirements.txt files are up to date
+      - uses: actions/setup-python@0a5c61591373683505ea898e09a3ea4f39ef2b9c #v5.0.0
+        with:
+          python-version-file: 'pyproject.toml'
+
+      - name: Validate Requirement Files Updated
+        run: |
+          make build-requirements build-requirements-dev
+          git diff-files --quiet
