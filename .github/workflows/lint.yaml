@@ -28,4 +28,4 @@ jobs:
         run: |
           python -m pip install pip-tools
           make build-requirements build-requirements-dev
-          git diff | cat
+          echo $(git diff)
