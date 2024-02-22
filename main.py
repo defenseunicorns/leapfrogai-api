@@ -17,9 +17,15 @@ async def healthz():
 async def models():
     return get_model_config()
 
-
 @app.on_event('startup')
 async def watch_for_configs():
+    print("Starting to watch for configs")
     asyncio.create_task(get_model_config().watch_and_load_configs())
+
+@app.on_event('shutdown')
+async def clear_configs():
+    print('Clearing model configs')
+    asyncio.create_task(get_model_config().clear_all_models())
+
 
 app.include_router(openai_router)

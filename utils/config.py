@@ -46,26 +46,18 @@ class Config:
             async for changes in awatch(directory, recursive=False, step=150):
                 # get two unique lists of files that have been (updated files and deleted files)
                 # (awatch can return duplicates depending on the type of updates that happen)
+                print("Config changes detected: {}".format(changes))
                 unique_new_files = set()
                 unique_deleted_files = set()
-                print("total incoming changes: ", changes)
                 for change in changes:
-                    print("type of change detected: {}".format(change[0]))
                     if change[0] == Change.deleted: 
                         unique_deleted_files.add(os.path.basename(change[1]))
                     else:
                         unique_new_files.add(os.path.basename(change[1]))
-                    
-
-                print("unique new files identified: ", unique_new_files)
-                print("unique deleted files identified: ", unique_deleted_files)
 
                 # filter the files to those that match the filename or glob pattern
                 filtered_new_matches = fnmatch.filter(unique_new_files, filename)
                 filtered_deleted_matches = fnmatch.filter(unique_deleted_files, filename)
-                
-                print("new matches to the filename ({}) in question: ".format(filename), filtered_new_matches)
-                print("deleted matches to the filename ({}) in question: ".format(filename), filtered_deleted_matches)
 
                 # load all the updated config files
                 for match in filtered_new_matches:
@@ -74,6 +66,12 @@ class Config:
                 # remove deleted models
                 for match in filtered_deleted_matches:
                     self.remove_model_by_config(match)
+
+    async def clear_all_models(self):
+        # reset the model config on shutdown (so old model configs don't get cached)
+        self.models = {}
+        self.config_sources = {}
+        print("All models have been removed")
 
     def load_config_file(self, directory: str, config_file: str):
         # load the config file into the config object
@@ -125,11 +123,12 @@ class Config:
                 self.config_sources[config_file].append(m["name"])
             except KeyError:
                 self.config_sources[config_file] = [m["name"]]
+            print("added {} to model config".format(m["name"]))
 
     def remove_model_by_config(self, config_file):
         for model_name in self.config_sources[config_file]:
             self.models.pop(model_name)
-            print("removed {} from Model Config".format(model_name))
+            print("removed {} from model config".format(model_name))
         
         # clear config once all corresponding models are deleted
         self.config_sources.pop(config_file)
