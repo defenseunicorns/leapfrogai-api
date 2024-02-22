@@ -1,9 +1,12 @@
 from fastapi.testclient import TestClient
+from fastapi import FastAPI
 from main import app
 import backends.openai.types as lfai_types
-import pytest
-import os
 import json
+import os
+import pytest
+import time
+import yaml
 
 os.environ["LFAI_CONFIG_FILENAME"] = "test-config.yaml"
 os.environ["LFAI_CONFIG_PATH"] = os.path.join(os.path.dirname(__file__), "fixtures")
@@ -14,7 +17,28 @@ def test_config_load():
         response = client.get("/models")
         assert response.status_code == 200
         assert response.json() == {'config_sources': {'test-config.yaml': ['repeater']},
-            "models":  {'repeater': {'backend': 'localhost:50051', 'name': 'repeater'}}}
+                     "models":  {'repeater': {'backend': 'localhost:50051', 'name': 'repeater'}}}
+
+def test_config_delete(tmp_path):
+    # move test-config.yaml to temp dir
+    os.system('cp tests/fixtures/test-config.yaml {}'.format(str(tmp_path)))
+    os.environ["LFAI_CONFIG_PATH"] = str(tmp_path)
+    with TestClient(app) as client:
+        # ensure the API loads the temp config
+        response = client.get("/models")
+        assert response.status_code == 200
+        assert response.json() == {'config_sources': {'test-config.yaml': ['repeater']},
+                     "models":  {'repeater': {'backend': 'localhost:50051', 'name': 'repeater'}}}
+        # delete source config from temp dir
+        os.system('rm {}'.format(os.path.join(str(tmp_path),'test-config.yaml')))
+        # wait for the api to be able to detect the change
+        time.sleep(0.5)
+        # assert response is now empty
+        response = client.get("/models")
+        assert response.status_code == 200
+        assert response.json() == {'config_sources': {}, "models":  {}}
+
+    os.environ["LFAI_CONFIG_PATH"] = os.path.join(os.path.dirname(__file__), "fixtures")
 
 
 def test_routes():
