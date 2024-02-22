@@ -22,7 +22,9 @@ class Config:
     models: dict[str, Model] = {}
     config_sources: dict[str, list] = {}
 
-    def __init__(self, models: dict[str, Model] = {}, config_sources: dict[str, list] = {}):
+    def __init__(
+        self, models: dict[str, Model] = {}, config_sources: dict[str, list] = {}
+    ):
         self.models = models
         self.config_sources = config_sources
 
@@ -50,14 +52,16 @@ class Config:
                 unique_new_files = set()
                 unique_deleted_files = set()
                 for change in changes:
-                    if change[0] == Change.deleted: 
+                    if change[0] == Change.deleted:
                         unique_deleted_files.add(os.path.basename(change[1]))
                     else:
                         unique_new_files.add(os.path.basename(change[1]))
 
                 # filter the files to those that match the filename or glob pattern
                 filtered_new_matches = fnmatch.filter(unique_new_files, filename)
-                filtered_deleted_matches = fnmatch.filter(unique_deleted_files, filename)
+                filtered_deleted_matches = fnmatch.filter(
+                    unique_deleted_files, filename
+                )
 
                 # load all the updated config files
                 for match in filtered_new_matches:
@@ -129,6 +133,6 @@ class Config:
         for model_name in self.config_sources[config_file]:
             self.models.pop(model_name)
             print("removed {} from model config".format(model_name))
-        
+
         # clear config once all corresponding models are deleted
         self.config_sources.pop(config_file)
