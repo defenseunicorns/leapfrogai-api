@@ -13,7 +13,8 @@ def test_config_load():
     with TestClient(app) as client:
         response = client.get("/models")
         assert response.status_code == 200
-        assert response.json() == {"models":  {'repeater': {'backend': 'localhost:50051', 'name': 'repeater'}}}
+        assert response.json() == {'config_sources': {'test-config.yaml': ['repeater']},
+            "models":  {'repeater': {'backend': 'localhost:50051', 'name': 'repeater'}}}
 
 
 def test_routes():
