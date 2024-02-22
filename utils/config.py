@@ -69,14 +69,15 @@ class Config:
 
                 # load all the updated config files
                 for match in filtered_new_matches:
-                    self.load_config_file(os.path.join(directory, match))
+                    self.load_config_file(directory, match)
 
                 # remove deleted models
                 for match in filtered_deleted_matches:
-                    self.remove_model_by_config(os.path.join(directory, match))
+                    self.remove_model_by_config(match)
 
-    def load_config_file(self, config_path: str):
+    def load_config_file(self, directory: str, config_file: str):
         # load the config file into the config object
+        config_path = os.path.join(directory, config_file)
         with open(config_path) as c:
             # Load the file into a python object
             loaded_artifact = {}
@@ -90,7 +91,7 @@ class Config:
                 return
 
             # parse the object into our config
-            self.parse_models(loaded_artifact, config_path)
+            self.parse_models(loaded_artifact, config_file)
 
         print("loaded artifact at {}".format(config_path))
 
@@ -105,7 +106,7 @@ class Config:
 
         # load all the found config files into the config object
         for config_path in config_files:
-            self.load_config_file(config_path)
+            self.load_config_file(directory, filename)
 
         return
 
@@ -115,20 +116,20 @@ class Config:
         else:
             return None
 
-    def parse_models(self, loaded_artifact, config_path):
+    def parse_models(self, loaded_artifact, config_file):
         for m in loaded_artifact["models"]:
             model_config = Model(name=m["name"], backend=m["backend"])
 
             self.models[m["name"]] = model_config
             try:
-                self.config_sources[config_path].append(m["name"])
+                self.config_sources[config_file].append(m["name"])
             except KeyError:
-                self.config_sources[config_path] = [m["name"]]
+                self.config_sources[config_file] = [m["name"]]
 
-    def remove_model_by_config(self, config_path):
-        for model_name in self.config_sources[config_path]:
+    def remove_model_by_config(self, config_file):
+        for model_name in self.config_sources[config_file]:
             self.models.pop(model_name)
             print("removed {} from Model Config".format(model_name))
         
         # clear config once all corresponding models are deleted
-        self.config_sources.pop(config_path)
+        self.config_sources.pop(config_file)
