@@ -13,21 +13,11 @@ constants:
   - name: KIWIGRID_VERSION
     value: "###ZARF_PKG_TMPL_KIWIGRID_VERSION###"
 
-variables:
-  - name: ISTIO_ENABLED
-    default: "false"
-  - name: ISTIO_GATEWAY
-    default: "tenant"
-  - name: ISTIO_INJECTION
-    default: "disabled"
-  - name: DOMAIN
-    default: "bigbang.dev"
-
 components:
   - name: leapfrogai
     required: true
     charts:
-    - name: leapfrogai
+    - name: leapfrogai 
       namespace: leapfrogai
       localPath: chart
       version: "###ZARF_PKG_TMPL_LEAPFROGAI_API_VERSION###"
@@ -36,11 +26,3 @@ components:
     images:
       - "ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:###ZARF_PKG_TMPL_LEAPFROGAI_API_VERSION###"
       - "registry1.dso.mil/ironbank/kiwigrid/k8s-sidecar:###ZARF_PKG_TMPL_KIWIGRID_VERSION###"
-  - name: metallb-config
-    required: false
-    description: "Creates metallb tenant ingresses for the cluster"
-    manifests:
-      - name: metallb-config
-        files:
-          - metallb/gateway.yaml
-          - metallb/service.yaml

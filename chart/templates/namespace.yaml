@@ -1,6 +1,4 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  labels:
-    istio-injection: {{ .Values.istio.injection }}
   name: leapfrogai
