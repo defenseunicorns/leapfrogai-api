@@ -1,4 +1,5 @@
 # LeapfrogAI Python API
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/defenseunicorns/leapfrogai-api/badge)](https://api.securityscorecards.dev/projects/github.com/defenseunicorns/leapfrogai-api)
 
 ## Description
 
