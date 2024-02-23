@@ -6,17 +6,18 @@ from backends.openai.routes import *
 from contextlib import asynccontextmanager
 from utils import get_model_config
 import asyncio
+import logging
 
 
 # handle startup & shutdown tasks
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # startup
-    print("Starting to watch for configs")
+    logging.info("Starting to watch for configs")
     asyncio.create_task(get_model_config().watch_and_load_configs())
     yield
     # shutdown
-    print("Clearing model configs")
+    logging.info("Clearing model configs")
     asyncio.create_task(get_model_config().clear_all_models())
 
 
