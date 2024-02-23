@@ -45,7 +45,7 @@ class Config:
 
         # Watch the directory for changes until the end of time
         while True:
-            async for changes in awatch(directory, recursive=False, step=500):
+            async for changes in awatch(directory, recursive=False, step=50):
                 # get two unique lists of files that have been (updated files and deleted files)
                 # (awatch can return duplicates depending on the type of updates that happen)
                 print("Config changes detected: {}".format(changes))
