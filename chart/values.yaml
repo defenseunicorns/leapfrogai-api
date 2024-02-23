@@ -10,3 +10,6 @@ api:
 
 monitoring:
   enabled: false
+
+package:
+  host: leapfrogai-api
