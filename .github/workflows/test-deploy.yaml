@@ -36,8 +36,7 @@ jobs:
 
       - name: Setup K3D
         run: |
-          wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
-          
+          wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.6.0 bash
 
       - name: Setup UDS
         run: |
