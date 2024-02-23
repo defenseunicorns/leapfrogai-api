@@ -6,7 +6,7 @@ from typing import List
 
 import toml
 import yaml
-from watchfiles import awatch
+from watchfiles import Change, awatch
 
 
 class Model:
@@ -20,9 +20,13 @@ class Model:
 
 class Config:
     models: dict[str, Model] = {}
+    config_sources: dict[str, list] = {}
 
-    def __init__(self, models: dict[str, Model] = {}):
+    def __init__(
+        self, models: dict[str, Model] = {}, config_sources: dict[str, list] = {}
+    ):
         self.models = models
+        self.config_sources = config_sources
 
     def __str__(self):
         return f"Models: {self.models}"
@@ -41,22 +45,41 @@ class Config:
 
         # Watch the directory for changes until the end of time
         while True:
-            async for changes in awatch(directory, recursive=False, step=150):
-                # get a unique list of files that have been updated
+            async for changes in awatch(directory, recursive=False, step=50):
+                # get two unique lists of files that have been (updated files and deleted files)
                 # (awatch can return duplicates depending on the type of updates that happen)
-                unique_files = set()
+                logging.info("Config changes detected: {}".format(changes))
+                unique_new_files = set()
+                unique_deleted_files = set()
                 for change in changes:
-                    unique_files.add(os.path.basename(change[1]))
+                    if change[0] == Change.deleted:
+                        unique_deleted_files.add(os.path.basename(change[1]))
+                    else:
+                        unique_new_files.add(os.path.basename(change[1]))
 
                 # filter the files to those that match the filename or glob pattern
-                filtered_matches = fnmatch.filter(unique_files, filename)
+                filtered_new_matches = fnmatch.filter(unique_new_files, filename)
+                filtered_deleted_matches = fnmatch.filter(
+                    unique_deleted_files, filename
+                )
 
                 # load all the updated config files
-                for match in filtered_matches:
-                    self.load_config_file(os.path.join(directory, match))
+                for match in filtered_new_matches:
+                    self.load_config_file(directory, match)
 
-    def load_config_file(self, config_path: str):
+                # remove deleted models
+                for match in filtered_deleted_matches:
+                    self.remove_model_by_config(match)
+
+    async def clear_all_models(self):
+        # reset the model config on shutdown (so old model configs don't get cached)
+        self.models = {}
+        self.config_sources = {}
+        logging.info("All models have been removed")
+
+    def load_config_file(self, directory: str, config_file: str):
         # load the config file into the config object
+        config_path = os.path.join(directory, config_file)
         with open(config_path) as c:
             # Load the file into a python object
             loaded_artifact = {}
@@ -66,11 +89,13 @@ class Config:
                 loaded_artifact = yaml.safe_load(c)
             else:
                 # TODO: Return an error ???
-                print(f"Unsupported file type: {config_path}")
+                logging.error(f"Unsupported file type: {config_path}")
                 return
 
             # parse the object into our config
-            self.parse_models(loaded_artifact)
+            self.parse_models(loaded_artifact, config_file)
+
+        logging.info("loaded artifact at {}".format(config_path))
 
         return
 
@@ -83,7 +108,7 @@ class Config:
 
         # load all the found config files into the config object
         for config_path in config_files:
-            self.load_config_file(config_path)
+            self.load_config_file(directory, filename)
 
         return
 
@@ -93,8 +118,21 @@ class Config:
         else:
             return None
 
-    def parse_models(self, loaded_artifact):
+    def parse_models(self, loaded_artifact, config_file):
         for m in loaded_artifact["models"]:
             model_config = Model(name=m["name"], backend=m["backend"])
 
             self.models[m["name"]] = model_config
+            try:
+                self.config_sources[config_file].append(m["name"])
+            except KeyError:
+                self.config_sources[config_file] = [m["name"]]
+            logging.info("added {} to model config".format(m["name"]))
+
+    def remove_model_by_config(self, config_file):
+        for model_name in self.config_sources[config_file]:
+            self.models.pop(model_name)
+            logging.info("removed {} from model config".format(model_name))
+
+        # clear config once all corresponding models are deleted
+        self.config_sources.pop(config_file)
