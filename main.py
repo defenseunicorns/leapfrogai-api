@@ -1,4 +1,3 @@
-import datetime
 from fastapi import FastAPI, Request
 
 # We need to import all the functions in these files so the router decorator gets processed
