@@ -66,8 +66,9 @@ class ChatDelta(BaseModel):
 class ChatCompletionRequest(BaseModel):
     model: str
     messages: list[ChatMessage]
-    functions: list[ChatFunction] | None = None
+    functions: list | None = None
     temperature: float | None = 1.0
+    top_p: float | None = 1
     stream: bool | None = False
     stop: str | None = None
     max_tokens: int | None = 128
