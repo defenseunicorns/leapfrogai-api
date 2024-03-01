@@ -4,11 +4,11 @@ from typing import Annotated
 import leapfrogai
 from fastapi import Depends, HTTPException
 
-from utils import get_model_config
-from utils.config import Config
+from src.utils import get_model_config
+from src.utils.config import Config
 
-from . import router
-from .grpc_client import (
+from src.backends.openai import router
+from src.backends.openai.grpc_client import (
     chat_completion,
     completion,
     create_embeddings,
@@ -16,8 +16,8 @@ from .grpc_client import (
     stream_chat_completion,
     stream_completion,
 )
-from .helpers import grpc_chat_role, read_chunks
-from .types import (
+from src.backends.openai.helpers import grpc_chat_role, read_chunks
+from src.backends.openai.types import (
     ChatCompletionRequest,
     CompletionRequest,
     CreateEmbeddingRequest,

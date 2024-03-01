@@ -5,8 +5,8 @@ import leapfrogai
 from fastapi.responses import StreamingResponse
 from leapfrogai import ChatRole
 
-from backends.openai.helpers import recv_chat, recv_completion
-from backends.openai.types import (
+from src.backends.openai.helpers import recv_chat, recv_completion
+from src.backends.openai.types import (
     ChatChoice,
     ChatCompletionResponse,
     ChatMessage,
@@ -17,7 +17,7 @@ from backends.openai.types import (
     EmbeddingResponseData,
     Usage,
 )
-from utils.config import Model
+from src.utils.config import Model
 
 
 async def stream_completion(model: Model, request: leapfrogai.CompletionRequest):

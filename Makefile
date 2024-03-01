@@ -7,23 +7,17 @@ activate-venv:
 	source .venv/bin/activate
 
 requirements-dev:
-	python -m pip install -r requirements-dev.txt
+	python -m pip install .[dev]
 
 requirements:
-	pip-sync requirements.txt
-
-build-requirements:
-	pip-compile -o requirements.txt pyproject.toml
-
-build-requirements-dev:
-	pip-compile --extra dev -o requirements-dev.txt pyproject.toml --allow-unsafe
+	python -m pip install .
 
 .PHONY: test
 test:
 	python -m pytest . -v
 
 dev:
-	uvicorn main:app --port 3000 --reload
+	uvicorn src.main:app --port 3000 --reload
 
 docker-build:
 	docker build -t ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:${VERSION} .
