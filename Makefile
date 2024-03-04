@@ -27,3 +27,7 @@ docker-push:
 
 zarf-build:
 	zarf package create . --confirm --set LFAI_API_VERSION=${VERSION}
+
+lint:
+	ruff check .
+	ruff format .

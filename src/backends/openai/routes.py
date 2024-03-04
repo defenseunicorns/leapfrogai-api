@@ -35,7 +35,7 @@ async def complete(
 ):
     # Get the model backend configuration
     model = model_config.get_model_backend(req.model)
-    if model == None:
+    if model is None:
         raise HTTPException(
             status_code=405,
             detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",
@@ -60,7 +60,7 @@ async def chat_complete(
 ):
     # Get the model backend configuration
     model = model_config.get_model_backend(req.model)
-    if model == None:
+    if model is None:
         raise HTTPException(
             status_code=405,
             detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",
@@ -85,7 +85,7 @@ async def chat_complete(
 
 @router.get("/models")
 async def models(
-    model_config: Annotated[Config, Depends(get_model_config)]
+    model_config: Annotated[Config, Depends(get_model_config)],
 ) -> ModelResponse:
     res = ModelResponse()
     for model in model_config.models:
@@ -101,23 +101,24 @@ async def embeddings(
 ) -> CreateEmbeddingResponse:
     # Get the model backend configuration
     model = model_config.get_model_backend(req.model)
-    if model == None:
+    if model is None:
         raise HTTPException(
             status_code=405,
             detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",
         )
 
-    if type(req.input) is str:
+    if isinstance(req.input, str):
         request = leapfrogai.EmbeddingRequest(inputs=[req.input])
-    elif type(req.input) is list and all(isinstance(i, str) for i in req.input):
+    elif isinstance(req.input, list) and all(isinstance(i, str) for i in req.input):
         request = leapfrogai.EmbeddingRequest(inputs=req.input)
     else:
         raise HTTPException(
             status_code=405,
-            detail=f"Invalid input type {type(req.input)}. Currently supported types are str and list[str]"
+            detail=f"Invalid input type {type(req.input)}. Currently supported types are str and list[str]",
         )
-        
+
     return await create_embeddings(model, request)
+
 
 @router.post("/audio/transcriptions")
 async def transcribe(
@@ -126,7 +127,7 @@ async def transcribe(
 ) -> CreateTranscriptionResponse:
     # Get the model backend configuration
     model = model_config.get_model_backend(req.model)
-    if model == None:
+    if model is None:
         raise HTTPException(
             status_code=405,
             detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",

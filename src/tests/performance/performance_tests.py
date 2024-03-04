@@ -16,7 +16,7 @@ class TestParallelization(unittest.IsolatedAsyncioTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.url = os.environ['API_ADDRESS']
+        cls.url = os.environ["API_ADDRESS"]
         cls.target_file = "0min12sec.wav"
 
     def file_exists(self, temp_file_path, file_name):
@@ -33,13 +33,18 @@ class TestParallelization(unittest.IsolatedAsyncioTestCase):
         os.mkdir(temp_file_path)
 
         options = webdriver.ChromeOptions()
-        options.add_argument('--ignore-ssl-errors=yes')
-        options.add_argument('--ignore-certificate-errors')
-        options.add_argument('--headless')
-        options.add_argument('--window-size=1920,1080')
-        options.add_experimental_option("prefs", {"download.default_directory": temp_file_path,
-                                                  "download.prompt_for_download": False,
-                                                  "profile.default_content_settings.popups": 0})
+        options.add_argument("--ignore-ssl-errors=yes")
+        options.add_argument("--ignore-certificate-errors")
+        options.add_argument("--headless")
+        options.add_argument("--window-size=1920,1080")
+        options.add_experimental_option(
+            "prefs",
+            {
+                "download.default_directory": temp_file_path,
+                "download.prompt_for_download": False,
+                "profile.default_content_settings.popups": 0,
+            },
+        )
         driver = webdriver.Chrome(options=options)
 
         # Load the DougTranslate Page
@@ -50,7 +55,9 @@ class TestParallelization(unittest.IsolatedAsyncioTestCase):
         driver.maximize_window()
 
         # Find and click start button
-        audio_start_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Upload an Audio File')]")
+        audio_start_button = driver.find_element(
+            By.XPATH, "//button[contains(text(), 'Upload an Audio File')]"
+        )
         audio_start_button.click()
 
         # Find file submission form
@@ -60,11 +67,15 @@ class TestParallelization(unittest.IsolatedAsyncioTestCase):
         file_input.send_keys(os.path.abspath("../data/" + self.target_file))
 
         # Find and click upload button
-        upload_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Upload')]")
+        upload_button = driver.find_element(
+            By.XPATH, "//button[contains(text(), 'Upload')]"
+        )
         upload_button.click()
 
         download_transcript_button = WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, "//a[contains(text(), 'Download Transcript')]"))
+            EC.presence_of_element_located(
+                (By.XPATH, "//a[contains(text(), 'Download Transcript')]")
+            )
         )
         download_transcript_button.click()
 
@@ -72,19 +83,28 @@ class TestParallelization(unittest.IsolatedAsyncioTestCase):
         wait = WebDriverWait(driver, timeout=30)
         wait.until(lambda d: self.file_exists(temp_file_path, transcription_file_name))
 
-        transcription_file_content = self.file_open(temp_file_path, transcription_file_name)
+        transcription_file_content = self.file_open(
+            temp_file_path, transcription_file_name
+        )
 
-        self.assertEqual(transcription_file_content.strip(), "I don't oppose war in all circumstances and when I look "
-                                                             "out over this crowd today I know there is no shortage of "
-                                                             "patriots or patriotism When I do oppose is a dumb war")
+        self.assertEqual(
+            transcription_file_content.strip(),
+            "I don't oppose war in all circumstances and when I look "
+            "out over this crowd today I know there is no shortage of "
+            "patriots or patriotism When I do oppose is a dumb war",
+        )
 
         # Find and click summarize button
-        summarize_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Summarize')]")
+        summarize_button = driver.find_element(
+            By.XPATH, "//button[contains(text(), 'Summarize')]"
+        )
         summarize_button.click()
 
         # Wait for the "Download Summary" button to appear
         download_summary_button = WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, "//a[contains(text(), 'Download Summary')]"))
+            EC.presence_of_element_located(
+                (By.XPATH, "//a[contains(text(), 'Download Summary')]")
+            )
         )
         download_summary_button.click()
 
@@ -117,6 +137,6 @@ class TestParallelization(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(0, self.failures)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.util._MAX_LENGTH = 300
     unittest.main()
