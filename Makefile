@@ -13,10 +13,10 @@ requirements:
 	pip-sync requirements.txt
 
 build-requirements:
-	pip-compile -o requirements.txt pyproject.toml
+	python -m piptools compile -o requirements.txt pyproject.toml
 
 build-requirements-dev:
-	pip-compile --extra dev -o requirements-dev.txt pyproject.toml --allow-unsafe
+	python -m piptools compile --extra dev -o requirements-dev.txt pyproject.toml --allow-unsafe
 
 .PHONY: test
 test:
@@ -33,3 +33,7 @@ docker-push:
 
 zarf-build:
 	zarf package create . --confirm --set LFAI_API_VERSION=${VERSION}
+
+lint:
+	ruff check .
+	ruff format .

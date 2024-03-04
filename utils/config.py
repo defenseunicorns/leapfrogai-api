@@ -34,10 +34,10 @@ class Config:
     async def watch_and_load_configs(self, directory=".", filename="config.yaml"):
         # Get the config directory and filename from the environment variables if provided
         env_directory = os.environ.get("LFAI_CONFIG_PATH", directory)
-        if env_directory != None and env_directory != "":
+        if env_directory is not None and env_directory != "":
             directory = env_directory
         env_filename = os.environ.get("LFAI_CONFIG_FILENAME", filename)
-        if env_filename != None and env_filename != "":
+        if env_filename is not None and env_filename != "":
             filename = env_filename
 
         # Process all the configs that were already in the directory
