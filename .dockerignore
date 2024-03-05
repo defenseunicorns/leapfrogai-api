@@ -7,3 +7,4 @@ build/
 Makefile
 requirements-dev.txt
 README.md
+pyproject.toml
