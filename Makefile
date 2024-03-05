@@ -7,10 +7,16 @@ activate-venv:
 	source .venv/bin/activate
 
 requirements-dev:
-	python -m pip install .[dev]
+	python -m pip install -r requirements-dev.txt
 
 requirements:
-	python -m pip install .
+	pip-sync requirements.txt
+
+build-requirements:
+	python -m piptools compile -o requirements.txt pyproject.toml
+
+build-requirements-dev:
+	python -m piptools compile --extra dev -o requirements-dev.txt pyproject.toml --allow-unsafe
 
 .PHONY: test
 test:

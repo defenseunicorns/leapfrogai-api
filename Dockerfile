@@ -4,9 +4,9 @@ FROM ghcr.io/defenseunicorns/leapfrogai/python:3.11-dev-${ARCH} as builder
 
 WORKDIR /leapfrogai
 
-COPY pyproject.toml .
+COPY requirements.txt .
 
-RUN pip install . --user
+RUN pip install -r requirements.txt --user
 
 FROM ghcr.io/defenseunicorns/leapfrogai/python:3.11-${ARCH}
 
