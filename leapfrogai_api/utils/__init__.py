@@ -1,4 +1,4 @@
-from src.utils.config import Config
+from leapfrogai_api.utils.config import Config
 
 config = Config()
 

@@ -23,7 +23,7 @@ test:
 	python -m pytest . -v
 
 dev:
-	uvicorn src.main:app --port 3000 --reload
+	uvicorn leapfrogai_api.main:app --port 3000 --reload
 
 docker-build:
 	docker build -t ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:${VERSION} .

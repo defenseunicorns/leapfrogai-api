@@ -1,5 +1,5 @@
-from src.main import app
-import src.backends.openai.types as lfai_types
+from leapfrogai_api.main import app
+import leapfrogai_api.backends.openai.types as lfai_types
 from fastapi.testclient import TestClient
 import json
 import os
@@ -22,7 +22,7 @@ def test_config_load():
 
 def test_config_delete(tmp_path):
     # move test-config.yaml to temp dir
-    os.system("cp src/tests/fixtures/test-config.yaml {}".format(str(tmp_path)))
+    os.system("cp tests/fixtures/test-config.yaml {}".format(str(tmp_path)))
     os.environ["LFAI_CONFIG_PATH"] = str(tmp_path)
     with TestClient(app) as client:
         # ensure the API loads the temp config

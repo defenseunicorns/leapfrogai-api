@@ -22,7 +22,7 @@ generate-hashes = true
 
 [tool.setuptools.packages.find]
 exclude = ["chart"]
-include = ["src"]
+include = ["leapfrogai_api"]
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]
