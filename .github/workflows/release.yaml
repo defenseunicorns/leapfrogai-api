@@ -5,6 +5,11 @@ on:
     tags:
       - "*"
 
+# Declare default permissions as read only.
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   zarf:
     runs-on: ubuntu-latest
