@@ -1,6 +1,9 @@
 name: pytest
 on: [pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   pytest:
     runs-on: ubuntu-latest
