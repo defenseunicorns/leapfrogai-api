@@ -5,6 +5,9 @@ on:
     tags:
       - "*"
 
+# Declare default permissions as read only.
+permissions: read-all
+
 jobs:
   zarf:
     runs-on: ubuntu-latest
