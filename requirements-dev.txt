@@ -60,9 +60,9 @@ click==8.1.7 \
     #   black
     #   pip-tools
     #   uvicorn
-fastapi==0.104.1 \
-    --hash=sha256:752dc31160cdbd0436bb93bad51560b57e525cbb1d4bbf6f4904ceee75548241 \
-    --hash=sha256:e5e4540a7c5e1dcfbbcf5b903c234feddcdcd881f191977a1c5dfd917487e7ae
+fastapi==0.109.1 \
+    --hash=sha256:510042044906b17b6d9149135d90886ade170bf615efcfb5533f568ae6d88534 \
+    --hash=sha256:5402389843a3561918634eb327e86b9ae98645a9e7696bede9074449c48d610a
     # via leapfrogai-api (pyproject.toml)
 grpcio==1.59.2 \
     --hash=sha256:023088764012411affe7db183d1ada3ad9daf2e23ddc719ff46d7061de661340 \
