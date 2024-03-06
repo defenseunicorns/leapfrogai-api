@@ -2,12 +2,12 @@
 name = "leapfrogai-api"
 version = "0.5.1"
 dependencies = [
-    "fastapi >= 0.103.1",
+    "fastapi >= 0.109.1",
     "pydantic >= 2.3.0",
     "uvicorn >= 0.23.2",
     "pyyaml >= 6.0.1",
     "leapfrogai >= 0.3.3",
-    "python-multipart >= 0.0.6",
+    "python-multipart >= 0.0.7",
     "toml >= 0.10.2",
     "watchfiles >= 0.21.0",
 ]
@@ -15,7 +15,15 @@ requires-python = "==3.11.6"
 readme = "README.md"
 
 [project.optional-dependencies]
-dev = ["pip-tools", "pytest", "black", "isort", "httpx", "selenium", "ruff"]
+dev = [
+    "pip-tools == 7.3.0",
+    "pytest",
+    "black",
+    "isort",
+    "httpx",
+    "selenium",
+    "ruff",
+]
 
 [tool.pip-tools]
 generate-hashes = true
