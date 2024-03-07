@@ -2,6 +2,9 @@ name: Test Package Deployment
 on:
   pull_request
 
+# Declare default permissions as read only.
+permissions: read-all
+
 jobs:
   e2e-build:
     runs-on: ubuntu-latest

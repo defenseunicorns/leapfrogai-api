@@ -1,6 +1,9 @@
 name: lint
 on: [pull_request]
 
+# Declare default permissions as read only.
+permissions: read-all
+
 jobs:
   ruff:
     runs-on: ubuntu-latest
