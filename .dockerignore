@@ -3,7 +3,8 @@ __pycache__/
 .vscode/
 .leapfrogai_api.egg-info
 test/
+build/
 Makefile
 requirements-dev.txt
-pyproject.toml
 README.md
+pyproject.toml

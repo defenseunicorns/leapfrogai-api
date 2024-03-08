@@ -12,6 +12,7 @@ dependencies = [
     "watchfiles >= 0.21.0",
 ]
 requires-python = "==3.11.6"
+readme = "README.md"
 
 [project.optional-dependencies]
 dev = [
@@ -29,6 +30,7 @@ generate-hashes = true
 
 [tool.setuptools.packages.find]
 exclude = ["chart"]
+include = ["leapfrogai_api"]
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]

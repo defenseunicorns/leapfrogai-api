@@ -23,10 +23,14 @@ test:
 	python -m pytest . -v
 
 dev:
-	uvicorn main:app --port 3000 --reload
+	if ! [ -f config.yaml ]; then cp config-example.yaml config.yaml; fi
+	uvicorn leapfrogai_api.main:app --port 3000 --reload
 
 docker-build:
 	docker build -t ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:${VERSION} .
+
+docker-run:
+	docker run -p 8080:8080 -v ./config.yaml:/leapfrogai/config.yaml ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:${VERSION}
 
 docker-push:
 	docker push ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:${VERSION}

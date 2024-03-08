@@ -1,12 +1,12 @@
-import asyncio
-import logging
-from contextlib import asynccontextmanager
-
 from fastapi import FastAPI
 
-from backends.openai import router as openai_router
-from backends.openai.routes import *  # noqa: F403 - We need to import all the functions in these files so the router decorator gets processed
-from utils import get_model_config
+# We need to import all the functions in these files so the router decorator gets processed
+from leapfrogai_api.backends.openai import router as openai_router
+from leapfrogai_api.backends.openai.routes import *  # noqa: F403 - We need to import all the functions in these files so the router decorator gets processed
+from leapfrogai_api.utils import get_model_config
+from contextlib import asynccontextmanager
+import asyncio
+import logging
 
 
 # handle startup & shutdown tasks
