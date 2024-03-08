@@ -23,6 +23,7 @@ test:
 	python -m pytest . -v
 
 dev:
+	if ! [ -f config.yaml ]; then cp config-example.yaml config.yaml; fi
 	uvicorn leapfrogai_api.main:app --port 3000 --reload
 
 docker-build:
