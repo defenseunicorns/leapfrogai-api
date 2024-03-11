@@ -36,14 +36,25 @@ jobs:
         username: ${{ secrets.IRON_BANK_ROBOT_USERNAME }}
         password: ${{ secrets.IRON_BANK_ROBOT_PASSWORD }}
 
-    - name: Build API Image
-      run: make docker-build docker-push VERSION=${{ steps.get_version.outputs.version-without-v }}
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3.0.0
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@0d103c3126aa41d772a8362f6aa67afac040f80c # v3.1.0
+
+    - name: Build images
+      run: |
+        docker buildx build --platform amd64,arm64 -t ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:${{ steps.get_version.outputs.version-without-v }} --push .
 
     - name: Install Zarf
       uses: defenseunicorns/setup-zarf@f95763914e20e493bb5d45d63e30e17138f981d6 # v1.0.0
 
-    - name: Build Zarf Package
-      run: zarf package create . --set=LEAPFROGAI_API_VERSION=${{ steps.get_version.outputs.version-without-v }} --confirm
+    - name: Build Zarf Packages
+      run: |
+        zarf package create . --set=PACKAGE_VERSION=${{ steps.get_version.outputs.version-without-v }} --set=IMAGE_VERSION=${{ steps.get_version.outputs.version-without-v }} --architecture amd64 --confirm
+        zarf package create . --set=PACKAGE_VERSION=${{ steps.get_version.outputs.version-without-v }} --set=IMAGE_VERSION=${{ steps.get_version.outputs.version-without-v }} --architecture arm64 --confirm
 
-    - name: Publish Zarf Package
-      run: zarf package publish zarf-package-*.zst oci://ghcr.io/defenseunicorns/packages
+    - name: Publish Zarf Packages
+      run: |
+        zarf package publish zarf-package-leapfrogai-api-amd64-${{ steps.get_version.outputs.version-without-v }}.tar.zst oci://ghcr.io/defenseunicorns/packages/leapfrogai
+        zarf package publish zarf-package-leapfrogai-api-arm64-${{ steps.get_version.outputs.version-without-v }}.tar.zst oci://ghcr.io/defenseunicorns/packages/leapfrogai
