@@ -51,8 +51,8 @@ jobs:
 
     - name: Build Zarf Packages
       run: |
-        zarf package create . --set=PACKAGE_VERSION=${{ steps.get_version.outputs.version-without-v }} --set=IMAGE_VERSION=${{ steps.get_version.outputs.version-without-v }} --architecture amd64 --confirm
-        zarf package create . --set=PACKAGE_VERSION=${{ steps.get_version.outputs.version-without-v }} --set=IMAGE_VERSION=${{ steps.get_version.outputs.version-without-v }} --architecture arm64 --confirm
+        zarf package create . --set=LEAPFROGAI_API_VERSION=${{ steps.get_version.outputs.version-without-v }} --architecture amd64 --confirm
+        zarf package create . --set=LEAPFROGAI_API_VERSION=${{ steps.get_version.outputs.version-without-v }} --architecture arm64 --confirm
 
     - name: Publish Zarf Packages
       run: |
