@@ -120,6 +120,14 @@ async def embeddings(
     return await create_embeddings(model, request)
 
 
+@router.post("/files")
+async def files() -> HTTPException:
+    raise HTTPException(
+        status_code=405,
+        detail="This endpoint is not implemented yet."
+    )
+
+
 @router.post("/audio/transcriptions")
 async def transcribe(
     model_config: Annotated[Config, Depends(get_model_config)],
