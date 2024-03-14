@@ -26,6 +26,8 @@ from leapfrogai_api.backends.openai.types import (
     CreateTranscriptionResponse,
     ModelResponse,
     ModelResponseModel,
+    UploadFileRequest,
+    UploadFileResponse,
 )
 
 
@@ -121,12 +123,39 @@ async def embeddings(
 
 
 @router.post("/files")
-async def files() -> HTTPException:
+async def files():
     raise HTTPException(
-        status_code=405,
+        status_code=501,
+        detail="This endpoint is not implemented yet."
+    )
+    
+@router.get("/files")
+async def files():
+    raise HTTPException(
+        status_code=501,
+        detail="This endpoint is not implemented yet."
+    )
+    
+@router.get("/files/{file_id}")
+async def files(file_id: str):
+    raise HTTPException(
+        status_code=501,
         detail="This endpoint is not implemented yet."
     )
 
+@router.delete("/files/{file_id}")
+async def files(file_id: str):
+    raise HTTPException(
+        status_code=501,
+        detail="This endpoint is not implemented yet."
+    )
+    
+@router.get("/files/{file_id}/content")
+async def files(file_id: str):
+    raise HTTPException(
+        status_code=501,
+        detail="This endpoint is not implemented yet."
+    )
 
 @router.post("/audio/transcriptions")
 async def transcribe(

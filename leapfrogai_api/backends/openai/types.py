@@ -5,6 +5,8 @@ from typing import Dict, Optional
 from fastapi import File, Form, UploadFile
 from pydantic import BaseModel
 
+from openai import File
+
 
 ##########
 # GENERIC
@@ -167,3 +169,39 @@ class CreateTranscriptionRequest(BaseModel):
 
 class CreateTranscriptionResponse(BaseModel):
     text: str
+    
+##########
+# FILES
+##########
+class UploadFileRequest:
+    file: UploadFile
+    purpose: str
+    
+class UploadFileResponse:
+    file: File
+    
+class ListFileRequest:
+    purpose: Optional[str] = None
+    
+class ListFileResponse:
+    files: list[File]
+    
+class RetrieveFileRequest:
+    file_id: str
+    
+class RetrieveFileResponse:
+    file: File
+    
+class DeleteFileRequest:
+    file_id: str
+    
+class DeleteFileResponse:
+    id: str
+    object: str = "file"
+    deleted: bool
+    
+class RetrieveFileContentRequest:
+    file_id: str
+    
+class RetrieveFileContentResponse:
+    content: str # Is this really a string?
