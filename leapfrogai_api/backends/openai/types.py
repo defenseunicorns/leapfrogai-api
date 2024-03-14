@@ -5,7 +5,7 @@ from typing import Dict, Optional
 from fastapi import File, Form, UploadFile
 from pydantic import BaseModel
 
-from openai import File
+from openai.types import FileObject
 
 
 ##########
@@ -174,23 +174,23 @@ class CreateTranscriptionResponse(BaseModel):
 # FILES
 ##########
 class UploadFileRequest:
-    file: UploadFile
+    file: FileObject
     purpose: str
     
 class UploadFileResponse:
-    file: File
+    file: FileObject
     
 class ListFileRequest:
     purpose: Optional[str] = None
     
 class ListFileResponse:
-    files: list[File]
+    files: list[FileObject]
     
 class RetrieveFileRequest:
     file_id: str
     
 class RetrieveFileResponse:
-    file: File
+    file: FileObject
     
 class DeleteFileRequest:
     file_id: str

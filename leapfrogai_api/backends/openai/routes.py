@@ -26,8 +26,6 @@ from leapfrogai_api.backends.openai.types import (
     CreateTranscriptionResponse,
     ModelResponse,
     ModelResponseModel,
-    UploadFileRequest,
-    UploadFileResponse,
 )
 
 
