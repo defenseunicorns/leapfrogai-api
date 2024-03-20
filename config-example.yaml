@@ -5,5 +5,3 @@ models:
   backend: localhost:50051
 - name: whisper
   backend: localhost:50051
-- name: llama-cpp-python
-  backend: localhost:50051
