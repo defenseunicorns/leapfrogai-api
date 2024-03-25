@@ -173,12 +173,23 @@ class CreateTranscriptionResponse(BaseModel):
 ##########
 # FILES
 ##########
-class UploadFileRequest:
-    file: FileObject
-    purpose: str
+class UploadFileRequest(BaseModel):
+    file: UploadFile
+    purpose: str = "assistants"
     
-class UploadFileResponse:
-    file: FileObject
+    @classmethod
+    def as_form(
+        cls,
+        file: UploadFile = File(...),
+        purpose: Optional[str] = Form("assistants"),
+    ) -> UploadFileRequest:
+        return cls(
+            file=file,
+            purpose=purpose,
+        )
+    
+class UploadFileResponse(BaseModel):
+    file: object
     
 class ListFileRequest:
     purpose: Optional[str] = None

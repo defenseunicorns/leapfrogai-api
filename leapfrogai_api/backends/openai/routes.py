@@ -3,6 +3,7 @@ from typing import Annotated
 
 import leapfrogai
 from fastapi import Depends, HTTPException
+from openai.types import FileObject
 
 from leapfrogai_api.utils import get_model_config
 from leapfrogai_api.utils.config import Config
@@ -26,6 +27,8 @@ from leapfrogai_api.backends.openai.types import (
     CreateTranscriptionResponse,
     ModelResponse,
     ModelResponseModel,
+    UploadFileRequest,
+    UploadFileResponse,
 )
 
 
@@ -119,12 +122,27 @@ async def embeddings(
 
     return await create_embeddings(model, request)
 
-
 @router.post("/files")
-async def files():
-    raise HTTPException(
-        status_code=501,
-        detail="This endpoint is not implemented yet."
+async def files(req: UploadFileRequest = Depends(UploadFileRequest.as_form)) -> UploadFileResponse:
+    if req.purpose != "assistants":
+        raise HTTPException(
+            status_code=405,
+            detail=f"Invalid purpose {req.purpose}. Currently supported purposes are 'assistants'.",
+        )
+    
+    fileObject = FileObject(
+        id="1234",
+        bytes= int(1234),
+        created_at= int(1234),
+        filename=req.file.filename,
+        object="file",
+        purpose=req.purpose,
+        status="uploaded",
+        status_details=None,
+    )
+        
+    return UploadFileResponse(
+        fileObject
     )
     
 @router.get("/files")
