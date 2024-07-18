@@ -1,4 +1,7 @@
 # LeapfrogAI Python API
+
+> ***⚠️This repo is archived in favor of the LeapfrogAI monorepo: https://github.com/defenseunicorns/leapfrogai⚠️***
+
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/defenseunicorns/leapfrogai-api/badge)](https://api.securityscorecards.dev/projects/github.com/defenseunicorns/leapfrogai-api)
 
 ## Description
